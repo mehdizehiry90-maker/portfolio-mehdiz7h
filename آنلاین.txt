@@ -1,0 +1,52 @@
+سایت رایگان روی PythonAnywhere
+==============================
+
+۱) برو به:
+   https://www.pythonanywhere.com
+
+۲) Sign up بزن (با ایمیل). پلن رایگان: Beginner
+
+۳) بعد از ورود، تب Files را باز کن.
+
+۴) یک پوشه بساز به نام:  mysite
+
+۵) همهٔ محتویات پوشهٔ portfolio را آپلود کن داخل mysite
+   (index.html و server.py و admin و data و fonts و images و wsgi.py)
+
+   راحت‌ترین راه: اول زیپ را آپلود کن، بعد در Files روی زیپ
+   دکمهٔ unzip بزن، بعد فایل‌ها را بکش داخل mysite
+
+۶) تب Web را باز کن → Add a new web app
+   - Manual configuration
+   - Python 3.10 (یا هر نسخهٔ ۳ که لیست دارد)
+
+۷) در همان صفحهٔ Web، بخش Code:
+   Source code:          /home/YOURUSERNAME/mysite
+   Working directory:    /home/YOURUSERNAME/mysite
+   WSGI configuration file را باز کن (لینک آبی)
+
+   کل محتوای آن فایل را پاک کن و فقط این دو خط را بگذار
+   (YOURUSERNAME را عوض کن):
+
+   import sys
+   path = "/home/YOURUSERNAME/mysite"
+   if path not in sys.path:
+       sys.path.append(path)
+   from server import app as application
+
+   Save بزن.
+
+۸) در Web، دکمهٔ سبز Reload را بزن.
+
+۹) بالای همان صفحه یک آدرس شبیه این هست:
+   https://YOURUSERNAME.pythonanywhere.com
+
+   سایت:  همان آدرس
+   پنل:   https://YOURUSERNAME.pythonanywhere.com/admin
+
+   کاربر: mehdiz7h
+   رمز:   studio2026
+
+محدودیت پلن رایگان
+- سایت گاهی اگر مدتی باز نشود، خواب می‌رود؛ با یک بازدید دوباره بیدار می‌شود.
+- دامنهٔ اختصاصی روی پلن رایگان معمولاً نیست؛ بعداً می‌شود.

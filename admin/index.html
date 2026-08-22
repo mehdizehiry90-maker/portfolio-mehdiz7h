@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>پنل — mehdiz7h</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --bg:#0a0a0a; --ink:#f3efe6; --mute:#8a857a; --line:#222; --acc:#d6ff3f; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--ink); font-family: Vazirmatn, sans-serif; min-height: 100vh; }
+    a { color: inherit; }
+    input, textarea, select, button { font: inherit; color: inherit; }
+    input, textarea, select {
+      width: 100%; background: #111; border: 1px solid #2a2a28; border-radius: 10px;
+      padding: 10px 12px; outline: none;
+    }
+    textarea { min-height: 90px; resize: vertical; }
+    label { display: block; font-size: .78rem; color: var(--mute); margin: 12px 0 6px; }
+    .btn {
+      border: 0; background: var(--acc); color: #111; font-weight: 700;
+      padding: 10px 16px; border-radius: 999px; cursor: pointer;
+    }
+    .btn.ghost { background: transparent; color: var(--ink); border: 1px solid #333; }
+    .btn.danger { background: #3a1515; color: #ffb4b4; }
+    .gate {
+      min-height: 100vh; display: grid; place-items: center; padding: 24px;
+    }
+    .card {
+      width: min(420px, 100%); background: #111; border: 1px solid #222; border-radius: 20px; padding: 28px;
+    }
+    .card h1 { font-family: Syne, sans-serif; font-size: 1.6rem; margin-bottom: 6px; }
+    .err { color: #ff8a8a; font-size: .85rem; margin-top: 10px; min-height: 1.2em; }
+    .shell { display: none; }
+    .top {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 4vw; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: #0a0a0acc; backdrop-filter: blur(10px); z-index: 5;
+    }
+    .logo { font-family: Syne, sans-serif; font-weight: 800; }
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; padding: 16px 4vw 0; }
+    .tabs button {
+      background: none; border: 1px solid #2a2a28; border-radius: 999px; padding: 7px 14px; cursor: pointer; color: var(--mute);
+    }
+    .tabs button.on { background: var(--ink); color: #111; border-color: var(--ink); }
+    .pane { display: none; padding: 20px 4vw 80px; }
+    .pane.on { display: block; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width:720px) { .grid2 { grid-template-columns: 1fr; } }
+    .works { display: grid; gap: 12px; }
+    .witem {
+      display: grid; grid-template-columns: 88px 1fr auto; gap: 12px; align-items: center;
+      background: #111; border: 1px solid #222; border-radius: 14px; padding: 10px;
+    }
+    .witem img { width: 88px; height: 66px; object-fit: cover; border-radius: 8px; background: #000; }
+    .toast {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: var(--acc); color: #111; padding: 10px 16px; border-radius: 999px;
+      font-weight: 600; display: none; z-index: 20;
+    }
+  </style>
+</head>
+<body>
+  <div class="gate" id="gate">
+    <form class="card" id="login">
+      <h1>Admin</h1>
+      <p style="color:var(--mute);margin-bottom:18px">ورود به پنل mehdiz7h</p>
+      <label>نام کاربری</label>
+      <input name="username" autocomplete="username" />
+      <label>رمز</label>
+      <input name="password" type="password" autocomplete="current-password" />
+      <div style="margin-top:18px"><button class="btn" type="submit">ورود</button></div>
+      <p class="err" id="login-err"></p>
+    </form>
+  </div>
+
+  <div class="shell" id="shell">
+    <header class="top">
+      <span class="logo">panel</span>
+      <div style="display:flex;gap:8px;align-items:center">
+        <a class="btn ghost" href="/" target="_blank">دیدن سایت</a>
+        <button class="btn ghost" id="save">ذخیره</button>
+        <button class="btn ghost" id="out">خروج</button>
+      </div>
+    </header>
+    <nav class="tabs">
+      <button class="on" data-tab="hero">هیرو</button>
+      <button data-tab="works">کارها</button>
+      <button data-tab="about">معرفی</button>
+      <button data-tab="theme">ظاهر</button>
+      <button data-tab="pass">رمز</button>
+    </nav>
+
+    <section class="pane on" id="tab-hero">
+      <div class="grid2">
+        <div><label>برند / لوگو</label><input id="brand" /></div>
+        <div><label>سال</label><input id="year" /></div>
+      </div>
+      <label>خط بالای هیرو (EN)</label><input id="eyebrow_en" />
+      <label>خط بالای هیرو (زیر)</label><input id="eyebrow_sub" />
+      <label>خط ۱ فارسی</label><input id="line1" />
+      <label>خط ۲ انگلیسی</label><input id="line2" />
+      <label>خط ۳ فارسی</label><input id="line3" />
+      <label>متای پایین</label><input id="meta" />
+    </section>
+
+    <section class="pane" id="tab-works">
+      <p style="color:var(--mute);margin-bottom:12px">عکس جدید آپلود کن، بعد عنوان و دسته را بگذار.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+        <input type="file" id="upfile" accept="image/*" style="max-width:280px" />
+        <button class="btn" type="button" id="addwork">افزودن کار</button>
+      </div>
+      <div class="works" id="works"></div>
+    </section>
+
+    <section class="pane" id="tab-about">
+      <label>کیکر</label><input id="kicker" />
+      <div class="grid2">
+        <div><label>قبل از اسم</label><input id="title_before" /></div>
+        <div><label>اسم هایلایت</label><input id="aname" /></div>
+      </div>
+      <label>بعد از اسم</label><input id="title_after" />
+      <label>بیو</label><textarea id="bio"></textarea>
+      <label>تگ‌ها (با ویرگول)</label><input id="tags" />
+      <div class="grid2">
+        <div><label>فوتر چپ</label><input id="fleft" /></div>
+        <div><label>فوتر راست</label><input id="fright" /></div>
+      </div>
+    </section>
+
+    <section class="pane" id="tab-theme">
+      <div class="grid2">
+        <div><label>پس‌زمینه</label><input id="c_bg" type="color" /></div>
+        <div><label>متن</label><input id="c_ink" type="color" /></div>
+        <div><label>خاکستری</label><input id="c_mute" type="color" /></div>
+        <div><label>اکسنت</label><input id="c_acc" type="color" /></div>
+      </div>
+    </section>
+
+    <section class="pane" id="tab-pass">
+      <label>رمز فعلی</label><input id="pold" type="password" />
+      <label>رمز جدید</label><input id="pnew" type="password" />
+      <div style="margin-top:14px"><button class="btn" type="button" id="changepw">عوض کردن رمز</button></div>
+    </section>
+  </div>
+  <div class="toast" id="toast">ذخیره شد</div>
+  <script src="/admin/admin.js"></script>
+</body>
+</html>

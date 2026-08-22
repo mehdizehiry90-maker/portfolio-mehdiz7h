@@ -1,0 +1,42 @@
+{
+  "brand": "mehdiz7h",
+  "year": "۲۰۲۶",
+  "hero": {
+    "eyebrow_en": "Graphic Designer",
+    "eyebrow_sub": "Social / Cover / YouTube",
+    "line1": "طراحی‌هایی که",
+    "line2": "STOP THE SCROLL",
+    "line3": "و کلیک می‌گیرند.",
+    "meta": "پست سوشال مدیا · کاور · تامنیل یوتیوب"
+  },
+  "about": {
+    "kicker": "About — کوتاه",
+    "title_before": "من",
+    "name": "mehdiz7h",
+    "title_after": "هستم.",
+    "bio": "طراح پست‌های سوشال مدیا، کاور و تامنیل یوتیوب. کارم اینه که ایده رو به تصویری تبدیل کنم که تو فید وایسه، کلیک بگیره، و برند رو یک‌جور دیده بشه.",
+    "tags": ["Social Posts", "Covers", "YouTube Thumbnails", "Photoshop"]
+  },
+  "footer": {
+    "left": "© 2026 mehdiz7h",
+    "right": "Selected works"
+  },
+  "theme": {
+    "bg": "#070707",
+    "ink": "#f3efe6",
+    "mute": "#8a857a",
+    "acc": "#d6ff3f"
+  },
+  "works": [
+    {"id": "w1", "src": "images/yt-01.jpg", "title": "I Stopped Scrolling", "kind": "YouTube Thumbnail", "cat": "yt", "wide": true},
+    {"id": "w2", "src": "images/post-01.jpg", "title": "Noir Perfume", "kind": "Social Post", "cat": "social", "wide": false},
+    {"id": "w3", "src": "images/post-02.jpg", "title": "Drop 07", "kind": "Social Post", "cat": "social", "wide": false},
+    {"id": "w4", "src": "images/cover-01.jpg", "title": "Frequency", "kind": "Cover Art", "cat": "cover", "wide": true},
+    {"id": "w5", "src": "images/yt-02.jpg", "title": "3 Colors That Sell", "kind": "YouTube Thumbnail", "cat": "yt", "wide": false},
+    {"id": "w6", "src": "images/post-03.jpg", "title": "Morning Ritual", "kind": "Social Post", "cat": "social", "wide": false},
+    {"id": "w7", "src": "images/cover-02.jpg", "title": "After Hours", "kind": "Cover Art", "cat": "cover", "wide": false},
+    {"id": "w8", "src": "images/post-04.jpg", "title": "21 Days", "kind": "Social Post", "cat": "social", "wide": false},
+    {"id": "w9", "src": "images/yt-03.jpg", "title": "I Fixed This Recipe", "kind": "YouTube Thumbnail", "cat": "yt", "wide": true},
+    {"id": "w10", "src": "images/post-05.jpg", "title": "New Drop", "kind": "Social Post", "cat": "social", "wide": false}
+  ]
+}
