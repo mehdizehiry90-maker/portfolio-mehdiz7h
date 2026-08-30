@@ -2,16 +2,17 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>mehdiz7h — Social · Cover · Thumbnail</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="noise" aria-hidden="true"></div>
   <div class="cursor" aria-hidden="true"></div>
+  <div class="spine" aria-hidden="true">GRAPHIC DESIGN · SOCIAL · COVER · YT</div>
 
   <header class="nav">
     <a class="logo" href="#top" id="brand">mehdiz7h</a>
@@ -24,6 +25,10 @@
 
   <main id="top">
     <section class="hero">
+      <div class="hero-mark" aria-hidden="true">
+        <span>01</span>
+        <span>STUDIO</span>
+      </div>
       <p class="eyebrow">
         <span id="eyebrow_en">Graphic Designer</span>
         <span class="dot"></span>
@@ -40,9 +45,19 @@
       </div>
     </section>
 
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>THUMBNAILS</span><span>COVERS</span><span>SOCIAL POSTS</span><span>STOP THE SCROLL</span>
+        <span>THUMBNAILS</span><span>COVERS</span><span>SOCIAL POSTS</span><span>STOP THE SCROLL</span>
+      </div>
+    </div>
+
     <section id="work" class="work">
       <div class="work-head">
-        <h2>Selected Work</h2>
+        <div>
+          <p class="kicker">Archive / 2026</p>
+          <h2>Selected Work</h2>
+        </div>
         <div class="filters" role="tablist">
           <button class="is-on" data-filter="all">همه</button>
           <button data-filter="social">سوشال</button>
@@ -51,48 +66,7 @@
         </div>
       </div>
 
-      <div class="grid" id="grid">
-        <article class="card w2" data-cat="yt" data-title="I Stopped Scrolling" data-kind="YouTube Thumbnail">
-          <img src="images/yt-01.jpg" alt="تامنیل یوتیوب — I Stopped Scrolling" />
-          <div class="cap"><span>YouTube</span><b>I Stopped Scrolling</b></div>
-        </article>
-        <article class="card" data-cat="social" data-title="Noir Perfume" data-kind="Social Post">
-          <img src="images/post-01.jpg" alt="پست سوشال — عطر لوکس" />
-          <div class="cap"><span>Social</span><b>Noir Perfume</b></div>
-        </article>
-        <article class="card" data-cat="social" data-title="Drop 07" data-kind="Social Post">
-          <img src="images/post-02.jpg" alt="پست سوشال — دراپ استریت‌ویر" />
-          <div class="cap"><span>Social</span><b>Drop 07</b></div>
-        </article>
-        <article class="card w2" data-cat="cover" data-title="Frequency" data-kind="Cover Art">
-          <img src="images/cover-01.jpg" alt="کاور — Frequency" />
-          <div class="cap"><span>Cover</span><b>Frequency</b></div>
-        </article>
-        <article class="card" data-cat="yt" data-title="3 Colors That Sell" data-kind="YouTube Thumbnail">
-          <img src="images/yt-02.jpg" alt="تامنیل — 3 Colors That Sell" />
-          <div class="cap"><span>YouTube</span><b>3 Colors That Sell</b></div>
-        </article>
-        <article class="card" data-cat="social" data-title="Morning Ritual" data-kind="Social Post">
-          <img src="images/post-03.jpg" alt="پست سوشال — قهوه" />
-          <div class="cap"><span>Social</span><b>Morning Ritual</b></div>
-        </article>
-        <article class="card" data-cat="cover" data-title="After Hours" data-kind="Cover Art">
-          <img src="images/cover-02.jpg" alt="کاور — After Hours" />
-          <div class="cap"><span>Cover</span><b>After Hours</b></div>
-        </article>
-        <article class="card" data-cat="social" data-title="21 Days" data-kind="Social Post">
-          <img src="images/post-04.jpg" alt="پست فیتنس — 21 Days" />
-          <div class="cap"><span>Social</span><b>21 Days</b></div>
-        </article>
-        <article class="card w2" data-cat="yt" data-title="I Fixed This Recipe" data-kind="YouTube Thumbnail">
-          <img src="images/yt-03.jpg" alt="تامنیل غذا" />
-          <div class="cap"><span>YouTube</span><b>I Fixed This Recipe</b></div>
-        </article>
-        <article class="card" data-cat="social" data-title="New Drop" data-kind="Social Post">
-          <img src="images/post-05.jpg" alt="پست تک — New Drop" />
-          <div class="cap"><span>Social</span><b>New Drop</b></div>
-        </article>
-      </div>
+      <div class="grid" id="grid"></div>
     </section>
 
     <section id="about" class="about">
@@ -113,8 +87,8 @@
   </main>
 
   <footer class="foot">
-    <span>© 2026 mehdiz7h</span>
-    <span class="en">Selected works · placeholders for now</span>
+    <span id="fleft">© 2026 mehdiz7h</span>
+    <span class="en" id="fright">Selected works</span>
   </footer>
 
   <div class="lb" id="lb" hidden>

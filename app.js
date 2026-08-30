@@ -28,7 +28,15 @@ function bindUi() {
   const lbKind = lb.querySelector("small");
   const lbTitle = lb.querySelector("strong");
 
-  cards.forEach((c) => {
+  cards.forEach((c, i) => {
+    if (!c.querySelector(".idx")) {
+      const n = document.createElement("span");
+      n.className = "idx";
+      n.textContent = String(i + 1).padStart(2, "0");
+      n.style.cssText =
+        "position:absolute;top:10px;inset-inline-end:12px;z-index:2;font-family:Syne,sans-serif;font-size:.7rem;letter-spacing:.12em;color:#d6ff3f";
+      c.appendChild(n);
+    }
     c.addEventListener("click", () => {
       lbImg.src = c.querySelector("img").src;
       lbImg.alt = c.querySelector("img").alt;
