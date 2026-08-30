@@ -42,6 +42,11 @@ function fill() {
   $("#tags").value = (site.about.tags || []).join("، ");
   $("#fleft").value = site.footer.left || "";
   $("#fright").value = site.footer.right || "";
+  $("#contact_kicker").value = (site.contact || {}).kicker || "";
+  $("#contact_title").value = (site.contact || {}).title || "";
+  $("#contact_text").value = (site.contact || {}).text || "";
+  $("#telegram").value = (site.contact || {}).telegram || "mehdiz7h";
+  $("#rubika").value = (site.contact || {}).rubika || "mehdiz7h";
   $("#c_bg").value = site.theme.bg || "#070707";
   $("#c_ink").value = site.theme.ink || "#f3efe6";
   $("#c_mute").value = site.theme.mute || "#8a857a";
@@ -74,6 +79,13 @@ function collect() {
     bio: $("#bio").value,
     tags: $("#tags").value.split(/[،,]+/).map((s) => s.trim()).filter(Boolean),
   };
+  site.contact = {
+    kicker: $("#contact_kicker").value,
+    title: $("#contact_title").value,
+    text: $("#contact_text").value,
+    telegram: $("#telegram").value.replace(/^@/, ""),
+    rubika: $("#rubika").value.replace(/^@/, ""),
+  };
   site.footer = { left: $("#fleft").value, right: $("#fright").value };
   site.theme = {
     bg: $("#c_bg").value,
@@ -99,11 +111,15 @@ function renderWorks() {
             <option value="cover" ${w.cat === "cover" ? "selected" : ""}>کاور</option>
             <option value="yt" ${w.cat === "yt" ? "selected" : ""}>تامنیل</option>
           </select>
+          <select data-k="ratio" data-i="${i}">
+            <option value="1-1" ${ (w.ratio||"1-1")==="1-1" ? "selected" : ""}>1:1 مربع</option>
+            <option value="4-5" ${w.ratio==="4-5" ? "selected" : ""}>4:5 عمودی</option>
+            <option value="16-9" ${w.ratio==="16-9" || w.wide ? "selected" : ""}>16:9 افقی</option>
+            <option value="9-16" ${w.ratio==="9-16" ? "selected" : ""}>16:9 عمودی</option>
+          </select>
           <input data-k="kind" data-i="${i}" value="${escapeAttr(w.kind || "")}" placeholder="برچسب" />
         </div>
-        <label style="margin:8px 0 0;display:flex;gap:8px;align-items:center;color:#aaa">
-          <input type="checkbox" data-k="wide" data-i="${i}" ${w.wide ? "checked" : ""} style="width:auto" /> عریض
-        </label>
+        <p style="margin:8px 0 0;color:#666;font-size:.75rem">نسبت نمایش در گالری</p>
       </div>
       <div style="display:flex;flex-direction:column;gap:6px">
         <button class="btn ghost" type="button" data-up="${i}">↑</button>
@@ -178,7 +194,12 @@ $("#works").addEventListener("input", (e) => {
 $("#works").addEventListener("click", (e) => {
   const t = e.target;
   if (t.dataset.del != null) {
-    site.works.splice(+t.dataset.del, 1);
+    const i = +t.dataset.del;
+    const src = site.works[i] && site.works[i].src;
+    if (src && src.startsWith("images/uploads/")) {
+      j("/api/delete-image", { method: "POST", body: JSON.stringify({ src }) }).catch(() => {});
+    }
+    site.works.splice(i, 1);
     renderWorks();
   }
   if (t.dataset.up != null) {
@@ -207,7 +228,7 @@ $("#addwork").addEventListener("click", async () => {
     title: "کار جدید",
     kind: "Social Post",
     cat: "social",
-    wide: false,
+    ratio: "1-1",
   });
   $("#upfile").value = "";
   renderWorks();

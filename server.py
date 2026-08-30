@@ -108,6 +108,28 @@ def api_save_site():
     return jsonify({"ok": True})
 
 
+def upload_path(src):
+    if not src or not str(src).startswith("images/uploads/"):
+        return None
+    p = (ROOT / src).resolve()
+    try:
+        p.relative_to(UPLOAD_DIR.resolve())
+    except ValueError:
+        return None
+    return p
+
+
+@app.post("/api/delete-image")
+@login_required
+def api_delete_image():
+    body = request.get_json(silent=True) or {}
+    p = upload_path(body.get("src"))
+    if p and p.is_file():
+        p.unlink()
+        return jsonify({"ok": True, "deleted": True})
+    return jsonify({"ok": True, "deleted": False})
+
+
 @app.post("/api/upload")
 @login_required
 def api_upload():

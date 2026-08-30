@@ -34,7 +34,7 @@ function bindUi() {
       n.className = "idx";
       n.textContent = String(i + 1).padStart(2, "0");
       n.style.cssText =
-        "position:absolute;top:10px;inset-inline-end:12px;z-index:2;font-family:Syne,sans-serif;font-size:.7rem;letter-spacing:.12em;color:#d6ff3f";
+        "position:absolute;top:10px;inset-inline-end:12px;z-index:2;font-family:Syne,sans-serif;font-size:.7rem;letter-spacing:.12em;color:var(--acc)";
       c.appendChild(n);
     }
     c.addEventListener("click", () => {
@@ -73,14 +73,29 @@ function applySite(s) {
     const el = document.getElementById(id);
     if (el && v != null) el.textContent = v;
   };
+  const h = s.hero || {};
   set("brand", s.brand);
   set("year", s.year);
-  set("eyebrow_en", s.hero.eyebrow_en);
-  set("eyebrow_sub", s.hero.eyebrow_sub);
-  set("line1", s.hero.line1);
-  set("line2", s.hero.line2);
-  set("line3", s.hero.line3);
-  set("hero_meta", s.hero.meta);
+  set("eyebrow_en", h.eyebrow_en);
+  set("eyebrow_sub", h.eyebrow_sub);
+  set("line1", h.line1);
+  set("line2", h.line2);
+  set("line3", h.line3);
+  set("hero_meta", h.meta);
+  set("mark_num", h.mark_num || "01");
+  set("mark_label", h.mark_label || "STUDIO");
+  set("spine", h.spine || "GRAPHIC DESIGN · SOCIAL · COVER · YT");
+  set("work_kicker", h.work_kicker || "Archive / 2026");
+  set("work_title", h.work_title || "Selected Work");
+
+  const tick = h.ticker || "THUMBNAILS · COVERS · SOCIAL POSTS · STOP THE SCROLL";
+  const parts = tick.split(/[·|,]+/).map((x) => x.trim()).filter(Boolean);
+  const track = document.getElementById("ticker_track");
+  if (track) {
+    const bits = parts.map((p) => `<span>${esc(p)}</span>`).join("");
+    track.innerHTML = bits + bits;
+  }
+
   set("kicker", s.about.kicker);
   document.getElementById("about_title").innerHTML =
     `${esc(s.about.title_before)} <em>${esc(s.about.name)}</em> ${esc(s.about.title_after)}`;
@@ -91,11 +106,23 @@ function applySite(s) {
   set("fleft", s.footer.left);
   set("fright", s.footer.right);
 
+  const c = s.contact || {};
+  set("contact_kicker", c.kicker || "Contact");
+  set("contact_title", c.title || "ارتباط با من");
+  set("contact_text", c.text || "");
+  const tg = (c.telegram || "mehdiz7h").replace(/^@/, "");
+  const ru = (c.rubika || "mehdiz7h").replace(/^@/, "");
+  const aTg = document.getElementById("link_tg");
+  const aRu = document.getElementById("link_ru");
+  if (aTg) aTg.href = "https://t.me/" + tg;
+  if (aRu) aRu.href = "https://rubika.ir/" + ru;
+
   const grid = document.getElementById("grid");
   grid.innerHTML = (s.works || [])
     .map((w) => {
       const cap = w.cat === "yt" ? "YouTube" : w.cat === "cover" ? "Cover" : "Social";
-      return `<article class="card${w.wide ? " w2" : ""}" data-cat="${esc(w.cat)}" data-title="${esc(w.title)}" data-kind="${esc(w.kind)}">
+      const ratio = w.ratio || (w.wide ? "16-9" : "1-1");
+      return `<article class="card" data-ratio="${esc(ratio)}" data-cat="${esc(w.cat)}" data-title="${esc(w.title)}" data-kind="${esc(w.kind)}">
         <img src="${esc(w.src)}" alt="${esc(w.title)}" />
         <div class="cap"><span>${cap}</span><b>${esc(w.title)}</b></div>
       </article>`;

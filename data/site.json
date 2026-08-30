@@ -23,6 +23,13 @@
     "bio": "طراح پست‌های سوشال مدیا، کاور و تامنیل یوتیوب. کارم اینه که ایده رو به تصویری تبدیل کنم که تو فید وایسه، کلیک بگیره، و برند رو یک‌جور دیده بشه.",
     "tags": ["Social Posts", "Covers", "YouTube Thumbnails", "Photoshop"]
   },
+  "contact": {
+    "kicker": "Contact",
+    "title": "ارتباط با من",
+    "text": "برای سفارش کاور، تامنیل یا پست سوشال پیام بده.",
+    "telegram": "mehdiz7h",
+    "rubika": "mehdiz7h"
+  },
   "footer": {
     "left": "© 2026 mehdiz7h",
     "right": "Selected works"
@@ -34,15 +41,15 @@
     "acc": "#d6ff3f"
   },
   "works": [
-    {"id": "w1", "src": "images/yt-01.jpg", "title": "I Stopped Scrolling", "kind": "YouTube Thumbnail", "cat": "yt", "wide": true},
-    {"id": "w2", "src": "images/post-01.jpg", "title": "Noir Perfume", "kind": "Social Post", "cat": "social", "wide": false},
-    {"id": "w3", "src": "images/post-02.jpg", "title": "Drop 07", "kind": "Social Post", "cat": "social", "wide": false},
-    {"id": "w4", "src": "images/cover-01.jpg", "title": "Frequency", "kind": "Cover Art", "cat": "cover", "wide": true},
-    {"id": "w5", "src": "images/yt-02.jpg", "title": "3 Colors That Sell", "kind": "YouTube Thumbnail", "cat": "yt", "wide": false},
-    {"id": "w6", "src": "images/post-03.jpg", "title": "Morning Ritual", "kind": "Social Post", "cat": "social", "wide": false},
-    {"id": "w7", "src": "images/cover-02.jpg", "title": "After Hours", "kind": "Cover Art", "cat": "cover", "wide": false},
-    {"id": "w8", "src": "images/post-04.jpg", "title": "21 Days", "kind": "Social Post", "cat": "social", "wide": false},
-    {"id": "w9", "src": "images/yt-03.jpg", "title": "I Fixed This Recipe", "kind": "YouTube Thumbnail", "cat": "yt", "wide": true},
-    {"id": "w10", "src": "images/post-05.jpg", "title": "New Drop", "kind": "Social Post", "cat": "social", "wide": false}
+    {"id": "w1", "src": "images/yt-01.jpg", "title": "I Stopped Scrolling", "kind": "YouTube Thumbnail", "cat": "yt", "ratio": "16-9"},
+    {"id": "w2", "src": "images/post-01.jpg", "title": "Noir Perfume", "kind": "Social Post", "cat": "social", "ratio": "1-1"},
+    {"id": "w3", "src": "images/post-02.jpg", "title": "Drop 07", "kind": "Social Post", "cat": "social", "ratio": "1-1"},
+    {"id": "w4", "src": "images/cover-01.jpg", "title": "Frequency", "kind": "Cover Art", "cat": "cover", "ratio": "16-9"},
+    {"id": "w5", "src": "images/yt-02.jpg", "title": "3 Colors That Sell", "kind": "YouTube Thumbnail", "cat": "yt", "ratio": "16-9"},
+    {"id": "w6", "src": "images/post-03.jpg", "title": "Morning Ritual", "kind": "Social Post", "cat": "social", "ratio": "4-5"},
+    {"id": "w7", "src": "images/cover-02.jpg", "title": "After Hours", "kind": "Cover Art", "cat": "cover", "ratio": "1-1"},
+    {"id": "w8", "src": "images/post-04.jpg", "title": "21 Days", "kind": "Social Post", "cat": "social", "ratio": "4-5"},
+    {"id": "w9", "src": "images/yt-03.jpg", "title": "I Fixed This Recipe", "kind": "YouTube Thumbnail", "cat": "yt", "ratio": "16-9"},
+    {"id": "w10", "src": "images/post-05.jpg", "title": "New Drop", "kind": "Social Post", "cat": "social", "ratio": "9-16"}
   ]
 }

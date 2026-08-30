@@ -343,14 +343,35 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
     margin: 0;
   }
 }
+.contact {
+  padding: 64px var(--pad) 80px;
+  border-top: 1px solid var(--line);
+}
+.contact h2 {
+  font-size: clamp(1.6rem, 5vw, 3rem); font-weight: 800; margin-bottom: 12px;
+}
+.socials { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.soc {
+  display: inline-flex; align-items: center; gap: 10px;
+  min-height: 48px; padding: 8px 16px 8px 8px;
+  border: 1px solid #2a2a28; border-radius: 999px;
+  font-weight: 700;
+}
+.soc img { width: 36px; height: 36px; object-fit: contain; }
+.soc:hover { border-color: var(--acc); color: var(--acc); }
+
 @media (max-width: 860px) {
-  .card, .card.w2 { grid-column: span 6; aspect-ratio: 4 / 5; }
+  .card { grid-column: span 6; }
+  .card[data-ratio="16-9"] { grid-column: span 12; }
+  .card[data-ratio="9-16"] { grid-column: span 6; }
   .cursor { display: none; }
   .hero-mark span:first-child { font-size: 3.2rem; }
 }
 @media (max-width: 640px) {
-  .card, .card.w2 { grid-column: span 12; aspect-ratio: 4 / 5; }
-  .card[data-cat="yt"], .card.w2 { aspect-ratio: 16 / 9; }
+  .card, .card[data-ratio="9-16"], .card[data-ratio="4-5"], .card[data-ratio="1-1"] {
+    grid-column: span 12;
+  }
+  .card[data-ratio="16-9"] { grid-column: span 12; }
   .nav nav { gap: 8px; font-size: .82rem; }
   .year { display: none; }
   .hero { padding-top: calc(22vh + var(--safe-t)); }
