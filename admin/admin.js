@@ -45,8 +45,30 @@ function fill() {
   $("#contact_kicker").value = (site.contact || {}).kicker || "";
   $("#contact_title").value = (site.contact || {}).title || "";
   $("#contact_text").value = (site.contact || {}).text || "";
-  $("#telegram").value = (site.contact || {}).telegram || "mehdiz7h";
-  $("#rubika").value = (site.contact || {}).rubika || "mehdiz7h";
+  $("#copy_hint").value = (site.contact || {}).copy_hint || "کلیک کن تا کپی بشه";
+  if (!site.contact) site.contact = {};
+  if (!site.contact.platforms) {
+    site.contact.platforms = [];
+    if (site.contact.telegram) {
+      site.contact.platforms.push({
+        id: "tg",
+        name: "تلگرام",
+        logo: "images/icon-telegram.svg",
+        url: "https://t.me/" + String(site.contact.telegram).replace(/^@/, ""),
+        handle: "@" + String(site.contact.telegram).replace(/^@/, ""),
+      });
+    }
+    if (site.contact.rubika) {
+      site.contact.platforms.push({
+        id: "ru",
+        name: "روبیکا",
+        logo: "images/icon-rubika.svg",
+        url: "https://rubika.ir/" + String(site.contact.rubika).replace(/^@/, ""),
+        handle: "@" + String(site.contact.rubika).replace(/^@/, ""),
+      });
+    }
+  }
+  renderPlats();
   $("#c_bg").value = site.theme.bg || "#070707";
   $("#c_ink").value = site.theme.ink || "#f3efe6";
   $("#c_mute").value = site.theme.mute || "#8a857a";
@@ -83,8 +105,8 @@ function collect() {
     kicker: $("#contact_kicker").value,
     title: $("#contact_title").value,
     text: $("#contact_text").value,
-    telegram: $("#telegram").value.replace(/^@/, ""),
-    rubika: $("#rubika").value.replace(/^@/, ""),
+    copy_hint: $("#copy_hint").value,
+    platforms: site.contact.platforms || [],
   };
   site.footer = { left: $("#fleft").value, right: $("#fright").value };
   site.theme = {

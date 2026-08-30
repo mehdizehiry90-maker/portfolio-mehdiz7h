@@ -21,7 +21,7 @@ DATA = ROOT / "data"
 SITE_FILE = DATA / "site.json"
 CFG_FILE = DATA / "config.json"
 UPLOAD_DIR = ROOT / "images" / "uploads"
-ALLOWED_EXT = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
+ALLOWED_EXT = {".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg"}
 
 DATA.mkdir(exist_ok=True)
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)

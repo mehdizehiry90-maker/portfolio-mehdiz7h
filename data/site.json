@@ -27,8 +27,23 @@
     "kicker": "Contact",
     "title": "ارتباط با من",
     "text": "برای سفارش کاور، تامنیل یا پست سوشال پیام بده.",
-    "telegram": "mehdiz7h",
-    "rubika": "mehdiz7h"
+    "copy_hint": "کلیک کن تا کپی بشه",
+    "platforms": [
+      {
+        "id": "tg",
+        "name": "تلگرام",
+        "logo": "images/icon-telegram.svg",
+        "url": "https://t.me/mehdiz7h",
+        "handle": "@mehdiz7h"
+      },
+      {
+        "id": "ru",
+        "name": "روبیکا",
+        "logo": "images/icon-rubika.svg",
+        "url": "https://rubika.ir/mehdiz7h",
+        "handle": "@mehdiz7h"
+      }
+    ]
   },
   "footer": {
     "left": "© 2026 mehdiz7h",

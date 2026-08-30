@@ -110,12 +110,68 @@ function applySite(s) {
   set("contact_kicker", c.kicker || "Contact");
   set("contact_title", c.title || "ارتباط با من");
   set("contact_text", c.text || "");
-  const tg = (c.telegram || "mehdiz7h").replace(/^@/, "");
-  const ru = (c.rubika || "mehdiz7h").replace(/^@/, "");
-  const aTg = document.getElementById("link_tg");
-  const aRu = document.getElementById("link_ru");
-  if (aTg) aTg.href = "https://t.me/" + tg;
-  if (aRu) aRu.href = "https://rubika.ir/" + ru;
+  const hint = c.copy_hint || "کلیک کن تا کپی بشه";
+  const box = document.getElementById("socials");
+  if (box) {
+    let plats = c.platforms;
+    if (!plats || !plats.length) {
+      plats = [];
+      if (c.telegram) {
+        plats.push({
+          name: "تلگرام",
+          logo: "images/icon-telegram.svg",
+          url: "https://t.me/" + String(c.telegram).replace(/^@/, ""),
+          handle: "@" + String(c.telegram).replace(/^@/, ""),
+        });
+      }
+      if (c.rubika) {
+        plats.push({
+          name: "روبیکا",
+          logo: "images/icon-rubika.svg",
+          url: "https://rubika.ir/" + String(c.rubika).replace(/^@/, ""),
+          handle: "@" + String(c.rubika).replace(/^@/, ""),
+        });
+      }
+    }
+    box.innerHTML = plats
+      .map((p) => {
+        const logo = p.logo
+          ? `<img src="${esc(p.logo)}" alt="" />`
+          : `<span class="soc-fallback">${esc((p.name || "?").slice(0, 1))}</span>`;
+        return `<article class="soc">
+          <a class="soc-logo" href="${esc(p.url || "#")}" target="_blank" rel="noopener" aria-label="${esc(p.name || "")}">
+            ${logo}
+          </a>
+          <div class="soc-meta">
+            <b>${esc(p.name || "")}</b>
+            <button type="button" class="soc-id" data-copy="${esc(p.handle || "")}">${esc(p.handle || "")}</button>
+            <small>${esc(hint)}</small>
+          </div>
+        </article>`;
+      })
+      .join("");
+    box.querySelectorAll(".soc-id").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const t = btn.dataset.copy || btn.textContent.trim();
+        try {
+          await navigator.clipboard.writeText(t);
+        } catch {
+          const ta = document.createElement("textarea");
+          ta.value = t;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          ta.remove();
+        }
+        const old = btn.nextElementSibling;
+        if (old) {
+          const prev = old.textContent;
+          old.textContent = "کپی شد";
+          setTimeout(() => (old.textContent = prev), 1400);
+        }
+      });
+    });
+  }
 
   const grid = document.getElementById("grid");
   grid.innerHTML = (s.works || [])
