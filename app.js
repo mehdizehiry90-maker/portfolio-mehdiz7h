@@ -68,7 +68,6 @@ function applySite(s) {
     root.style.setProperty("--ink", s.theme.ink);
     root.style.setProperty("--mute", s.theme.mute);
     root.style.setProperty("--acc", s.theme.acc);
-    document.body.style.background = s.theme.bg;
   }
   const set = (id, v) => {
     const el = document.getElementById(id);

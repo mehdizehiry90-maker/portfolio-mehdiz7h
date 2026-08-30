@@ -28,6 +28,12 @@ function fill() {
   $("#line2").value = site.hero.line2 || "";
   $("#line3").value = site.hero.line3 || "";
   $("#meta").value = site.hero.meta || "";
+  $("#mark_num").value = site.hero.mark_num || "01";
+  $("#mark_label").value = site.hero.mark_label || "STUDIO";
+  $("#ticker").value = site.hero.ticker || "";
+  $("#spine").value = site.hero.spine || "";
+  $("#work_kicker").value = site.hero.work_kicker || "";
+  $("#work_title").value = site.hero.work_title || "";
   $("#kicker").value = site.about.kicker || "";
   $("#title_before").value = site.about.title_before || "";
   $("#aname").value = site.about.name || "";
@@ -53,6 +59,12 @@ function collect() {
     line2: $("#line2").value,
     line3: $("#line3").value,
     meta: $("#meta").value,
+    mark_num: $("#mark_num").value,
+    mark_label: $("#mark_label").value,
+    ticker: $("#ticker").value,
+    spine: $("#spine").value,
+    work_kicker: $("#work_kicker").value,
+    work_title: $("#work_title").value,
   };
   site.about = {
     kicker: $("#kicker").value,
