@@ -45,7 +45,7 @@ function fill() {
   $("#contact_kicker").value = (site.contact || {}).kicker || "";
   $("#contact_title").value = (site.contact || {}).title || "";
   $("#contact_text").value = (site.contact || {}).text || "";
-  $("#copy_hint").value = (site.contact || {}).copy_hint || "کلیک کن تا کپی بشه";
+  $("#copy_hint") && ($("#copy_hint").value = (site.contact || {}).copy_hint || "کلیک کن تا کپی بشه");
   if (!site.contact) site.contact = {};
   if (!site.contact.platforms) {
     site.contact.platforms = [];
@@ -105,7 +105,7 @@ function collect() {
     kicker: $("#contact_kicker").value,
     title: $("#contact_title").value,
     text: $("#contact_text").value,
-    copy_hint: $("#copy_hint").value,
+    copy_hint: ($("#copy_hint") && $("#copy_hint").value) || "کلیک کن تا کپی بشه",
     platforms: site.contact.platforms || [],
   };
   site.footer = { left: $("#fleft").value, right: $("#fright").value };
@@ -147,6 +147,33 @@ function renderWorks() {
         <button class="btn ghost" type="button" data-up="${i}">↑</button>
         <button class="btn ghost" type="button" data-dn="${i}">↓</button>
         <button class="btn danger" type="button" data-del="${i}">حذف</button>
+      </div>`;
+    box.appendChild(el);
+  });
+}
+
+function renderPlats() {
+  const box = $("#plats");
+  if (!box) return;
+  if (!site.contact) site.contact = {};
+  if (!site.contact.platforms) site.contact.platforms = [];
+  box.innerHTML = "";
+  site.contact.platforms.forEach((p, i) => {
+    const el = document.createElement("div");
+    el.className = "witem";
+    el.style.gridTemplateColumns = "72px 1fr auto";
+    el.innerHTML = `
+      <img src="/${escapeAttr(p.logo || "")}" alt="" style="width:72px;height:72px;object-fit:contain;background:#000;border-radius:12px" />
+      <div>
+        <input data-pk="name" data-i="${i}" value="${escapeAttr(p.name || "")}" placeholder="نام پلتفرم" />
+        <input data-pk="url" data-i="${i}" value="${escapeAttr(p.url || "")}" placeholder="لینک کامل پیوی https://..." style="margin-top:6px" />
+        <input data-pk="handle" data-i="${i}" value="${escapeAttr(p.handle || "")}" placeholder="آیدی یا شماره مثل @mehdiz7h" style="margin-top:6px" />
+        <input type="file" accept="image/*,.svg" data-logo="${i}" style="margin-top:8px" />
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <button class="btn ghost" type="button" data-pup="${i}">↑</button>
+        <button class="btn ghost" type="button" data-pdn="${i}">↓</button>
+        <button class="btn danger" type="button" data-pdel="${i}">حذف</button>
       </div>`;
     box.appendChild(el);
   });
@@ -256,6 +283,72 @@ $("#addwork").addEventListener("click", async () => {
   renderWorks();
   toast("اضافه شد — ذخیره را بزن");
 });
+
+(function bindPlats() {
+  const add = $("#addplat");
+  const box = $("#plats");
+  if (add) {
+    add.addEventListener("click", () => {
+      if (!site.contact) site.contact = {};
+      if (!site.contact.platforms) site.contact.platforms = [];
+      site.contact.platforms.push({
+        id: "p" + Date.now(),
+        name: "",
+        logo: "",
+        url: "",
+        handle: "",
+      });
+      renderPlats();
+    });
+  }
+  if (!box) return;
+  box.addEventListener("input", (e) => {
+    const t = e.target;
+    if (t.dataset.pk == null) return;
+    const i = +t.dataset.i;
+    site.contact.platforms[i][t.dataset.pk] = t.value;
+  });
+  box.addEventListener("change", async (e) => {
+    const t = e.target;
+    if (t.dataset.logo == null || !t.files || !t.files[0]) return;
+    const i = +t.dataset.logo;
+    const fd = new FormData();
+    fd.append("file", t.files[0]);
+    const r = await fetch("/api/upload", { method: "POST", body: fd, credentials: "same-origin" });
+    const data = await r.json();
+    if (!r.ok) return toast(data.error || "آپلود لوگو نشد");
+    const old = site.contact.platforms[i].logo;
+    if (old && old.startsWith("images/uploads/")) {
+      j("/api/delete-image", { method: "POST", body: JSON.stringify({ src: old }) }).catch(() => {});
+    }
+    site.contact.platforms[i].logo = data.src;
+    renderPlats();
+    toast("لوگو آپلود شد — ذخیره را بزن");
+  });
+  box.addEventListener("click", (e) => {
+    const t = e.target;
+    const list = site.contact.platforms || [];
+    if (t.dataset.pdel != null) {
+      const i = +t.dataset.pdel;
+      const src = list[i] && list[i].logo;
+      if (src && src.startsWith("images/uploads/")) {
+        j("/api/delete-image", { method: "POST", body: JSON.stringify({ src }) }).catch(() => {});
+      }
+      list.splice(i, 1);
+      renderPlats();
+    }
+    if (t.dataset.pup != null) {
+      const i = +t.dataset.pup;
+      if (i > 0) [list[i - 1], list[i]] = [list[i], list[i - 1]];
+      renderPlats();
+    }
+    if (t.dataset.pdn != null) {
+      const i = +t.dataset.pdn;
+      if (i < list.length - 1) [list[i + 1], list[i]] = [list[i], list[i + 1]];
+      renderPlats();
+    }
+  });
+})();
 
 $("#changepw").addEventListener("click", async () => {
   try {
