@@ -21,6 +21,9 @@ async function j(url, opt) {
 
 function fill() {
   $("#brand").value = site.brand || "";
+  if (!site.logo) site.logo = "images/logo.png";
+  const lp = $("#logo_preview");
+  if (lp) lp.src = "/" + site.logo.replace(/^\//, "");
   $("#year").value = site.year || "";
   $("#eyebrow_en").value = site.hero.eyebrow_en || "";
   $("#eyebrow_sub").value = site.hero.eyebrow_sub || "";
@@ -189,7 +192,11 @@ async function boot() {
     site = await j("/api/site");
     $("#gate").style.display = "none";
     $("#shell").style.display = "block";
-    fill();
+    try {
+      fill();
+    } catch (err) {
+      console.error(err);
+    }
   } catch {
     $("#gate").style.display = "grid";
     $("#shell").style.display = "none";
@@ -349,6 +356,22 @@ $("#addwork").addEventListener("click", async () => {
     }
   });
 })();
+
+const logof = $("#logofile");
+if (logof) {
+  logof.addEventListener("change", async () => {
+    const file = logof.files[0];
+    if (!file) return;
+    const fd = new FormData();
+    fd.append("file", file);
+    const r = await fetch("/api/upload", { method: "POST", body: fd, credentials: "same-origin" });
+    const data = await r.json();
+    if (!r.ok) return toast(data.error || "آپلود لوگو نشد");
+    site.logo = data.src;
+    if ($("#logo_preview")) $("#logo_preview").src = "/" + data.src;
+    toast("لوگو آپلود شد — ذخیره را بزن");
+  });
+}
 
 $("#changepw").addEventListener("click", async () => {
   try {

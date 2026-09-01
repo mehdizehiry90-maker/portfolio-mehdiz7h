@@ -74,6 +74,13 @@ function applySite(s) {
     if (el && v != null) el.textContent = v;
   };
   const h = s.hero || {};
+  const logo = s.logo || "images/logo.png";
+  const limg = document.getElementById("logoimg");
+  if (limg) limg.src = logo;
+  const fav = document.getElementById("favicon");
+  if (fav) fav.href = logo;
+  const ap = document.getElementById("appleicon");
+  if (ap) ap.href = logo;
   set("brand", s.brand);
   set("year", s.year);
   set("eyebrow_en", h.eyebrow_en);

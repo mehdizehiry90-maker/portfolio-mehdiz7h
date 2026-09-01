@@ -1,5 +1,6 @@
 {
   "brand": "mehdiz7h",
+  "logo": "images/logo.png",
   "year": "۲۰۲۶",
   "hero": {
     "eyebrow_en": "Graphic Designer",
@@ -56,6 +57,10 @@
     "acc": "#d6ff3f"
   },
   "works": [
+    {"id": "r1", "src": "images/work-yt-subs.jpg", "title": "YouTube Growth", "kind": "YouTube Thumbnail", "cat": "yt", "ratio": "16-9"},
+    {"id": "r2", "src": "images/work-truck.jpg", "title": "سیدبار", "kind": "Social Post", "cat": "social", "ratio": "4-5"},
+    {"id": "r3", "src": "images/work-konkoorez.jpg", "title": "Konkoorez", "kind": "Social Post", "cat": "social", "ratio": "9-16"},
+    {"id": "r4", "src": "images/work-orange.jpg", "title": "Orange Service", "kind": "Social Post", "cat": "social", "ratio": "1-1"},
     {"id": "w1", "src": "images/yt-01.jpg", "title": "I Stopped Scrolling", "kind": "YouTube Thumbnail", "cat": "yt", "ratio": "16-9"},
     {"id": "w2", "src": "images/post-01.jpg", "title": "Noir Perfume", "kind": "Social Post", "cat": "social", "ratio": "1-1"},
     {"id": "w3", "src": "images/post-02.jpg", "title": "Drop 07", "kind": "Social Post", "cat": "social", "ratio": "1-1"},
