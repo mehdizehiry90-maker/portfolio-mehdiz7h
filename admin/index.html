@@ -45,6 +45,8 @@
     .tabs button.on { background: var(--ink); color: #111; border-color: var(--ink); }
     .pane { display: none; padding: 20px 4vw 80px; }
     .pane.on { display: block; }
+    .wgt { display: grid; grid-template-columns: 1fr 130px; gap: 8px; align-items: start; }
+    @media (max-width:720px) { .wgt { grid-template-columns: 1fr; } }
     .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     @media (max-width:720px) { .grid2 { grid-template-columns: 1fr; } }
     .works { display: grid; gap: 12px; }
@@ -99,9 +101,13 @@
       </div>
       <label>خط بالای هیرو (EN)</label><input id="eyebrow_en" />
       <label>خط بالای هیرو (زیر)</label><input id="eyebrow_sub" />
-      <label>خط ۱ فارسی</label><input id="line1" />
-      <label>خط ۲ انگلیسی</label><input id="line2" />
-      <label>خط ۳ فارسی</label><input id="line3" />
+      <p style="color:var(--mute);font-size:.82rem;margin:10px 0">وزن چند کلمه: <code>[[800:این متن]]</code> — ۳۰۰ نازک، ۴۰۰ عادی، ۵۰۰ متوسط، ۷۰۰ ضخیم، ۸۰۰ خیلی ضخیم. وزن کل فیلد از لیست کنارش.</p>
+      <label>خط ۱ فارسی</label>
+      <div class="wgt"><input id="line1" /><select id="w_line1"></select></div>
+      <label>خط ۲ انگلیسی</label>
+      <div class="wgt"><input id="line2" /><select id="w_line2"></select></div>
+      <label>خط ۳ فارسی</label>
+      <div class="wgt"><input id="line3" /><select id="w_line3"></select></div>
       <label>متای پایین</label><input id="meta" />
       <div class="grid2">
         <div><label>عدد گوشه (مثل 01)</label><input id="mark_num" /></div>
@@ -131,7 +137,8 @@
         <div><label>اسم هایلایت</label><input id="aname" /></div>
       </div>
       <label>بعد از اسم</label><input id="title_after" />
-      <label>بیو</label><textarea id="bio"></textarea>
+      <label>بیو</label>
+      <div class="wgt"><textarea id="bio"></textarea><select id="w_bio"></select></div>
       <label>تگ‌ها (با ویرگول)</label><input id="tags" />
       <div class="grid2">
         <div><label>فوتر چپ</label><input id="fleft" /></div>
@@ -142,7 +149,8 @@
     <section class="pane" id="tab-contact">
       <label>کیکر</label><input id="contact_kicker" />
       <label>عنوان</label><input id="contact_title" />
-      <label>متن</label><textarea id="contact_text"></textarea>
+      <label>متن</label>
+      <div class="wgt"><textarea id="contact_text"></textarea><select id="w_contact_text"></select></div>
       <label>متن زیر آیدی (کپی)</label><input id="copy_hint" />
       <p style="color:var(--mute);margin:16px 0 10px">هر پلتفرم: لوگو + لینک کامل پیوی + آیدی/شماره که روی سایت دیده شود.</p>
       <button class="btn" type="button" id="addplat">افزودن پلتفرم</button>

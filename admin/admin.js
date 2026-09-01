@@ -19,6 +19,20 @@ async function j(url, opt) {
   return data;
 }
 
+const WOPTS = [
+  ["", "وزن پیش‌فرض"],
+  ["300", "۳۰۰ نازک"],
+  ["400", "۴۰۰ عادی"],
+  ["500", "۵۰۰ متوسط"],
+  ["700", "۷۰۰ ضخیم"],
+  ["800", "۸۰۰ خیلی ضخیم"],
+];
+function fillWeight(id, val) {
+  const sel = document.getElementById(id);
+  if (!sel) return;
+  sel.innerHTML = WOPTS.map(([v, l]) => `<option value="${v}" ${String(val||"")===v?"selected":""}>${l}</option>`).join("");
+}
+
 function fill() {
   $("#brand").value = site.brand || "";
   if (!site.logo) site.logo = "images/logo.png";
@@ -30,6 +44,12 @@ function fill() {
   $("#line1").value = site.hero.line1 || "";
   $("#line2").value = site.hero.line2 || "";
   $("#line3").value = site.hero.line3 || "";
+  const W = site.weights || {};
+  fillWeight("w_line1", W.line1);
+  fillWeight("w_line2", W.line2);
+  fillWeight("w_line3", W.line3);
+  fillWeight("w_bio", W.bio);
+  fillWeight("w_contact_text", W.contact_text);
   $("#meta").value = site.hero.meta || "";
   $("#mark_num").value = site.hero.mark_num || "01";
   $("#mark_label").value = site.hero.mark_label || "STUDIO";
@@ -110,6 +130,13 @@ function collect() {
     text: $("#contact_text").value,
     copy_hint: ($("#copy_hint") && $("#copy_hint").value) || "کلیک کن تا کپی بشه",
     platforms: site.contact.platforms || [],
+  };
+  site.weights = {
+    line1: ($("#w_line1") && $("#w_line1").value) || "",
+    line2: ($("#w_line2") && $("#w_line2").value) || "",
+    line3: ($("#w_line3") && $("#w_line3").value) || "",
+    bio: ($("#w_bio") && $("#w_bio").value) || "",
+    contact_text: ($("#w_contact_text") && $("#w_contact_text").value) || "",
   };
   site.footer = { left: $("#fleft").value, right: $("#fright").value };
   site.theme = {

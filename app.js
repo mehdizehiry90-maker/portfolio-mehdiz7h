@@ -85,9 +85,10 @@ function applySite(s) {
   set("year", s.year);
   set("eyebrow_en", h.eyebrow_en);
   set("eyebrow_sub", h.eyebrow_sub);
-  set("line1", h.line1);
-  set("line2", h.line2);
-  set("line3", h.line3);
+  const W = s.weights || {};
+  setRich("line1", h.line1, W.line1);
+  setRich("line2", h.line2, W.line2);
+  setRich("line3", h.line3, W.line3);
   set("hero_meta", h.meta);
   set("mark_num", h.mark_num || "01");
   set("mark_label", h.mark_label || "STUDIO");
@@ -106,7 +107,7 @@ function applySite(s) {
   set("kicker", s.about.kicker);
   document.getElementById("about_title").innerHTML =
     `${esc(s.about.title_before)} <em>${esc(s.about.name)}</em> ${esc(s.about.title_after)}`;
-  set("bio", s.about.bio);
+  setRich("bio", s.about.bio, W.bio);
   document.getElementById("tags").innerHTML = (s.about.tags || [])
     .map((t) => `<li>${esc(t)}</li>`)
     .join("");
@@ -198,6 +199,19 @@ function esc(s) {
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/"/g, "&quot;");
+}
+
+function rich(s, w) {
+  let t = esc(s).replace(/\n/g, "<br>");
+  t = t.replace(/\[\[(\d{3}):([\s\S]*?)\]\]/g, '<span style="font-weight:$1">$2</span>');
+  if (w) t = `<span style="font-weight:${esc(w)}">${t}</span>`;
+  return t;
+}
+
+function setRich(id, s, w) {
+  const el = document.getElementById(id);
+  if (!el || s == null) return;
+  el.innerHTML = rich(s, w);
 }
 
 function tickIranClock() {
