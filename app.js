@@ -100,7 +100,7 @@ function applySite(s) {
   const track = document.getElementById("ticker_track");
   if (track) {
     const bits = parts.map((p) => `<span>${esc(p)}</span>`).join("");
-    track.innerHTML = bits + bits;
+    track.innerHTML = bits + bits + bits + bits;
   }
 
   set("kicker", s.about.kicker);
@@ -200,10 +200,37 @@ function esc(s) {
     .replace(/"/g, "&quot;");
 }
 
+function tickIranClock() {
+  const el = document.getElementById("iran_clock");
+  if (!el) return;
+  const now = new Date();
+  const date = new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
+    timeZone: "Asia/Tehran",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    weekday: "long",
+  }).format(now);
+  const time = new Intl.DateTimeFormat("fa-IR", {
+    timeZone: "Asia/Tehran",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  }).format(now);
+  el.innerHTML = `<b>${time}</b>${date}`;
+}
+
 fetch("/api/site")
   .then((r) => r.json())
   .then((s) => {
     applySite(s);
     bindUi();
+    tickIranClock();
+    setInterval(tickIranClock, 1000);
   })
-  .catch(() => bindUi());
+  .catch(() => {
+    bindUi();
+    tickIranClock();
+    setInterval(tickIranClock, 1000);
+  });

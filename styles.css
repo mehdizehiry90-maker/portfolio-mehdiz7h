@@ -156,10 +156,10 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   max-width: 12ch;
 }
 .hero .en {
-  font-family: var(--font-en); font-weight: 800;
-  font-size: clamp(1.7rem, 10.5vw, 6.4rem);
-  letter-spacing: -.06em; color: var(--acc);
-  line-height: .9;
+  font-family: var(--font-en); font-weight: 500;
+  font-size: clamp(1.45rem, 7.5vw, 4.4rem);
+  letter-spacing: -.02em; color: var(--acc);
+  line-height: 1.05;
   direction: ltr;
   unicode-bidi: isolate;
   text-align: left;
@@ -168,7 +168,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   max-width: 100%;
   white-space: pre-line;
   overflow-wrap: break-word;
-  word-break: keep-all;
+  word-break: normal;
   margin: .16em 0 .2em;
 }
 .hero .faint { color: #6a655c; }
@@ -198,18 +198,24 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   border-bottom: 1px solid var(--line);
   padding: 12px 0;
   background: #0c0c0c;
+  direction: ltr;
 }
 .ticker-track {
-  display: flex; gap: 36px; width: max-content;
+  display: flex;
+  width: max-content;
   font-family: var(--font-en); font-weight: 800;
-  letter-spacing: .22em; font-size: .72rem;
+  letter-spacing: .18em; font-size: .72rem;
   color: var(--acc);
-  animation: tick 22s linear infinite;
+  animation: tick 28s linear infinite;
 }
-.ticker-track span { white-space: nowrap; }
+.ticker-track span {
+  flex: none;
+  padding: 0 1.6rem;
+  white-space: nowrap;
+}
 @keyframes tick {
   from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  to { transform: translateX(-25%); }
 }
 
 .work { padding: 56px var(--pad) 32px; }
@@ -375,12 +381,30 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .soc-meta b { font-size: .82rem; color: var(--mute); font-weight: 600; }
 .soc-id {
   font-family: var(--font-en);
-  font-size: 1.05rem;
-  font-weight: 800;
+  font-size: 1.02rem;
+  font-weight: 500;
   color: var(--ink);
   direction: ltr;
   text-align: left;
   word-break: break-all;
+}
+.iran-clock {
+  position: fixed;
+  z-index: 45;
+  bottom: calc(12px + var(--safe-b));
+  inset-inline-end: var(--pad);
+  font-family: var(--font-fa);
+  font-size: .78rem;
+  color: var(--mute);
+  text-align: end;
+  line-height: 1.45;
+  pointer-events: none;
+}
+.iran-clock b {
+  display: block;
+  color: var(--acc);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 .soc-meta small { color: var(--acc); font-size: .72rem; }
 
