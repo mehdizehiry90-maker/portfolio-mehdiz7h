@@ -56,7 +56,7 @@ body {
   min-height: 100dvh;
   overflow-x: hidden;
 }
-img { display: block; width: 100%; height: 100%; object-fit: cover; }
+img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
 
@@ -391,17 +391,14 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .soc-meta small { color: var(--acc); font-size: .72rem; }
 
 @media (max-width: 860px) {
-  .card { grid-column: span 6; }
-  .card[data-ratio="16-9"] { grid-column: span 12; }
-  .card[data-ratio="9-16"] { grid-column: span 6; }
+  .card, .card[data-ratio="16-9"], .card[data-ratio="9-16"] { grid-column: span 12; }
   .cursor { display: none; }
   .hero-mark span:first-child { font-size: 3.2rem; }
 }
 @media (max-width: 640px) {
-  .card, .card[data-ratio="9-16"], .card[data-ratio="4-5"], .card[data-ratio="1-1"] {
+  .card, .card[data-ratio="9-16"], .card[data-ratio="4-5"], .card[data-ratio="1-1"], .card[data-ratio="16-9"] {
     grid-column: span 12;
   }
-  .card[data-ratio="16-9"] { grid-column: span 12; }
   .nav nav { gap: 8px; font-size: .82rem; }
   .year { display: none; }
   .hero { padding-top: calc(22vh + var(--safe-t)); }
