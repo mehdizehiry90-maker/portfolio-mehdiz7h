@@ -299,7 +299,7 @@ const DEF_POS = [
   { x: 52, y: 50, w: 44, h: 48, z: 1 },
 ];
 function featuredList() {
-  return (site.works || []).filter((w) => w.featured).slice(0, 4);
+  return (site.works || []).filter((w) => w.featured).sort((a, b) => (a.layer || 0) - (b.layer || 0)).slice(0, 4);
 }
 function ensurePos(w, i) {
   if (!w.pos) w.pos = { ...DEF_POS[i % DEF_POS.length] };
@@ -328,6 +328,17 @@ function renderCollage() {
       </button>`
     ).join("");
   }
+  const ord = $("#corder");
+  if (ord) {
+    ord.innerHTML = list.map((w, i) =>
+      `<div class="crow">
+        <img src="/${escapeAttr(w.src)}" alt="" />
+        <span>${i + 1}. ${escapeAttr(w.title)}</span>
+        <button type="button" class="btn ghost" data-layer-up="${escapeAttr(w.id)}">بالا</button>
+        <button type="button" class="btn ghost" data-layer-dn="${escapeAttr(w.id)}">پایین</button>
+      </div>`
+    ).join("");
+  }
 }
 
 function setFeatured(i, on) {
@@ -339,7 +350,11 @@ function setFeatured(i, on) {
     }
   }
   site.works[i].featured = on;
-  if (on) ensurePos(site.works[i], featuredList().length - 1);
+  if (on) {
+    const max = Math.max(0, ...site.works.map((w) => w.layer || 0));
+    site.works[i].layer = max + 1;
+    ensurePos(site.works[i], featuredList().length - 1);
+  }
   renderCollage();
   return true;
 }

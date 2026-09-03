@@ -74,7 +74,7 @@ function applySite(s) {
   set("fright", s.footer.right);
 
   const works = s.works || [];
-  const featured = works.filter((w) => w.featured).slice(0, 4);
+  const featured = works.filter((w) => w.featured).sort((a, b) => (a.layer || 0) - (b.layer || 0)).slice(0, 4);
   const heroWorks = featured.length ? featured : works.slice(0, 4);
   const art = document.getElementById("hero_art");
   if (art) {
