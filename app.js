@@ -71,9 +71,15 @@ function applySite(s) {
   const heroWorks = featured.length ? featured : works.slice(0, 4);
   const art = document.getElementById("hero_art");
   if (art) {
-    art.innerHTML = heroWorks.map((w) =>
-      `<a href="/work/${esc(w.id)}" data-ratio="${esc(w.ratio || "1-1")}"><img src="${esc(webp(w.src))}" alt="${esc(w.title)}" loading="eager" onerror="this.src=this.src.replace('.webp','.jpg')" /></a>`
-    ).join("");
+    const placed = heroWorks.some((w) => w.pos);
+    art.classList.toggle("placed", placed);
+    art.innerHTML = heroWorks.map((w) => {
+      const p = w.pos;
+      const st = p
+        ? `left:${+p.x}%;top:${+p.y}%;width:${+p.w}%;height:${+p.h}%;z-index:${p.z || 1}`
+        : "";
+      return `<a href="/work/${esc(w.id)}" data-ratio="${esc(w.ratio || "1-1")}" style="${st}"><img src="${esc(webp(w.src))}" alt="${esc(w.title)}" loading="eager" onerror="this.src=this.src.replace('.webp','.jpg')" /></a>`;
+    }).join("");
   }
 
   const c = s.contact || {};

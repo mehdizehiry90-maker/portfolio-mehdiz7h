@@ -60,6 +60,23 @@
       background: var(--acc); color: #111; padding: 10px 16px; border-radius: 999px;
       font-weight: 600; display: none; z-index: 20;
     }
+    .collage-wrap { margin: 0 0 22px; }
+    .collage-board {
+      position: relative; direction: ltr; width: min(560px, 100%);
+      aspect-ratio: 1 / 1; background: #0c0c0c;
+      border: 1px dashed #3a3a36; border-radius: 12px; overflow: hidden;
+      touch-action: none; user-select: none;
+    }
+    .citem {
+      position: absolute; overflow: hidden; background: #111;
+      border: 1px solid #444; cursor: grab; box-shadow: 0 8px 24px #0008;
+    }
+    .citem.drag { cursor: grabbing; border-color: var(--acc); z-index: 50 !important; }
+    .citem img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+    .citem .rz {
+      position: absolute; right: 2px; bottom: 2px; width: 16px; height: 16px;
+      background: var(--acc); cursor: nwse-resize; border-radius: 2px;
+    }
   </style>
 </head>
 <body>
@@ -122,7 +139,11 @@
     </section>
 
     <section class="pane" id="tab-works">
-      <p style="color:var(--mute);margin-bottom:12px">عکس جدید آپلود کن. تیک «کلاژ هیرو» حداکثر ۴ کار را در Selected Work بالای صفحه نشان می‌دهد. نسبت را درست بگذار تا ابعاد به‌هم نریزد.</p>
+      <div class="collage-wrap">
+        <p style="color:var(--mute);margin-bottom:10px">کلاژ هیرو: عکس را بکشید. گوشهٔ سبز = اندازه. بعد ذخیره را بزنید.</p>
+        <div class="collage-board" id="collage"></div>
+      </div>
+      <p style="color:var(--mute);margin-bottom:12px">تیک «کلاژ هیرو» حداکثر ۴ کار. نسبت گالری جداست.</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
         <input type="file" id="upfile" accept="image/*" style="max-width:280px" />
         <button class="btn" type="button" id="addwork">افزودن کار</button>

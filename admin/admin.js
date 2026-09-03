@@ -270,6 +270,32 @@ document.querySelector(".tabs").addEventListener("click", (e) => {
   document.querySelectorAll(".pane").forEach((p) => p.classList.toggle("on", p.id === "tab-" + b.dataset.tab));
 });
 
+const DEF_POS = [
+  { x: 2, y: 10, w: 46, h: 42, z: 2 },
+  { x: 52, y: 0, w: 46, h: 48, z: 3 },
+  { x: 8, y: 52, w: 40, h: 46, z: 4 },
+  { x: 52, y: 50, w: 44, h: 48, z: 1 },
+];
+function featuredList() {
+  return (site.works || []).filter((w) => w.featured).slice(0, 4);
+}
+function ensurePos(w, i) {
+  if (!w.pos) w.pos = { ...DEF_POS[i % DEF_POS.length] };
+  return w.pos;
+}
+function renderCollage() {
+  const board = $("#collage");
+  if (!board || !site) return;
+  const list = featuredList();
+  board.innerHTML = list.map((w, i) => {
+    const p = ensurePos(w, i);
+    return `<div class="citem" data-id="${escapeAttr(w.id)}" style="left:${p.x}%;top:${p.y}%;width:${p.w}%;height:${p.h}%;z-index:${p.z || i + 1}">
+      <img src="/${escapeAttr(w.src)}" alt="" />
+      <span class="rz"></span>
+    </div>`;
+  }).join("");
+}
+
 function setFeatured(i, on) {
   if (on) {
     const n = site.works.filter((w) => w.featured).length;
@@ -279,8 +305,61 @@ function setFeatured(i, on) {
     }
   }
   site.works[i].featured = on;
+  if (on) ensurePos(site.works[i], featuredList().length - 1);
+  renderCollage();
   return true;
 }
+
+(function bindCollage() {
+  const board = $("#collage");
+  if (!board) return;
+  let mode = null;
+  let start = null;
+  function workById(id) {
+    return (site.works || []).find((w) => w.id === id);
+  }
+  board.addEventListener("pointerdown", (e) => {
+    const item = e.target.closest(".citem");
+    if (!item) return;
+    const w = workById(item.dataset.id);
+    if (!w) return;
+    item.setPointerCapture(e.pointerId);
+    const r = board.getBoundingClientRect();
+    const p = ensurePos(w, 0);
+    mode = e.target.classList.contains("rz") ? "resize" : "move";
+    item.classList.add("drag");
+    p.z = 20;
+    item.style.zIndex = 50;
+    start = { x: e.clientX, y: e.clientY, p: { ...p }, rw: r.width, rh: r.height, el: item, w };
+    e.preventDefault();
+  });
+  board.addEventListener("pointermove", (e) => {
+    if (!start) return;
+    const dx = ((e.clientX - start.x) / start.rw) * 100;
+    const dy = ((e.clientY - start.y) / start.rh) * 100;
+    const p = start.w.pos;
+    if (mode === "move") {
+      p.x = Math.max(0, Math.min(100 - p.w, start.p.x + dx));
+      p.y = Math.max(0, Math.min(100 - p.h, start.p.y + dy));
+    } else {
+      p.w = Math.max(12, Math.min(100 - p.x, start.p.w + dx));
+      p.h = Math.max(12, Math.min(100 - p.y, start.p.h + dy));
+    }
+    start.el.style.left = p.x + "%";
+    start.el.style.top = p.y + "%";
+    start.el.style.width = p.w + "%";
+    start.el.style.height = p.h + "%";
+  });
+  const end = (e) => {
+    if (!start) return;
+    start.el.classList.remove("drag");
+    start.w.pos.z = 4;
+    start = null;
+    mode = null;
+  };
+  board.addEventListener("pointerup", end);
+  board.addEventListener("pointercancel", end);
+})();
 
 $("#works").addEventListener("input", (e) => {
   const t = e.target;
