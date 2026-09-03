@@ -9,6 +9,7 @@
   <style>
     :root { --bg:#0a0a0a; --ink:#f3efe6; --mute:#8a857a; --line:#222; --acc:#d6ff3f; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    img { max-width: 100%; height: auto; display: block; }
     body { background: var(--bg); color: var(--ink); font-family: Vazirmatn, sans-serif; min-height: 100vh; }
     a { color: inherit; }
     input, textarea, select, button { font: inherit; color: inherit; }
@@ -62,26 +63,31 @@
     }
     .collage-wrap { margin: 0 0 22px; }
     .collage-board {
-      position: relative; direction: ltr; width: min(560px, 100%);
+      position: relative; direction: ltr; width: min(380px, 100%);
       aspect-ratio: 1 / 1; background: #0c0c0c;
       border: 1px dashed #3a3a36; border-radius: 12px; overflow: hidden;
       touch-action: none; user-select: none;
     }
     .citem {
       position: absolute; overflow: hidden; background: #111;
-      border: 1px solid #444; cursor: grab; box-shadow: 0 8px 24px #0008;
+      border: 0; border-radius: 12px; cursor: grab; box-shadow: 0 8px 24px #0008;
     }
-    .citem.drag { cursor: grabbing; border-color: var(--acc); z-index: 50 !important; }
-    .citem img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+    .citem.drag { cursor: grabbing; outline: 2px solid var(--acc); z-index: 50 !important; }
+    .citem img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; border-radius: 12px; }
     .citem .rz {
       position: absolute; right: 2px; bottom: 2px; width: 16px; height: 16px;
       background: var(--acc); cursor: nwse-resize; border-radius: 2px;
     }
     .cempty { color: #666; display: grid; place-items: center; height: 100%; padding: 24px; text-align: center; }
-    .pick { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 18px; }
-    .pthumb { width: 72px; height: 72px; padding: 0; border: 2px solid #333; border-radius: 10px; overflow: hidden; background: #111; cursor: pointer; }
-    .pthumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .pick { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 18px; max-width: 640px; }
+    .pthumb { width: 56px; height: 56px; padding: 0; border: 2px solid #333; border-radius: 10px; overflow: hidden; background: #111; cursor: pointer; flex: none; }
+    .pthumb img { width: 56px; height: 56px; object-fit: cover; display: block; }
     .pthumb.on { border-color: var(--acc); }
+    #corder { max-width: 420px; }
+    .crow { display:flex; align-items:center; gap:10px; margin:6px 0; background:#111; padding:8px; border-radius:10px; }
+    .crow img { width:40px; height:40px; object-fit:cover; border-radius:8px; flex:none; }
+    .crow span { flex:1; font-size:.85rem; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .crow .btn { padding: 6px 10px; font-size: .75rem; }
   </style>
 </head>
 <body>
