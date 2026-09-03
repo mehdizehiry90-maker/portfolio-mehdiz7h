@@ -153,18 +153,77 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   min-height: 280px;
 }
 .hero-art a {
-  overflow: hidden; border: 1px solid #222; background: #0c0c0c;
-  box-shadow: 0 16px 40px rgba(0,0,0,.4);
+  overflow: hidden;
+  border: 0;
+  background: transparent;
 }
-.hero-art.placed a { position: absolute; }
+.hero-art.placed a {
+  position: absolute;
+  aspect-ratio: auto;
+  left: 22%;
+  top: 14%;
+  width: 56%;
+  height: 70%;
+  border: 0;
+  box-shadow:
+    0 22px 48px rgba(0,0,0,.62),
+    0 2px 0 rgba(255,255,255,.06);
+  transition: left .55s var(--ease), top .55s var(--ease), width .55s var(--ease), height .55s var(--ease), transform .55s var(--ease), box-shadow .4s;
+}
 .hero-art img {
-  width: 100%; height: 100%; object-fit: contain; background: #0c0c0c;
+  width: 100%; height: 100%; object-fit: contain; background: transparent;
 }
 .hero-art a[data-ratio="16-9"] { aspect-ratio: 16/9; }
 .hero-art a[data-ratio="4-5"] { aspect-ratio: 4/5; }
 .hero-art a[data-ratio="9-16"] { aspect-ratio: 9/16; }
 .hero-art a[data-ratio="1-1"] { aspect-ratio: 1/1; }
 .hero-art.placed a { aspect-ratio: auto; }
+
+.hero-art.placed a:nth-child(1) {
+  z-index: 1;
+  animation: wig1 6.2s ease-in-out infinite;
+}
+.hero-art.placed a:nth-child(2) {
+  z-index: 2;
+  animation: wig2 7s ease-in-out infinite;
+}
+.hero-art.placed a:nth-child(3) {
+  z-index: 3;
+  animation: wig3 5.6s ease-in-out infinite;
+}
+.hero-art.placed a:nth-child(4) {
+  z-index: 4;
+  animation: wig4 6.8s ease-in-out infinite;
+}
+@keyframes wig1 {
+  0%, 100% { transform: rotate(-10deg) translate(-14%, 8%); }
+  50% { transform: rotate(-6deg) translate(-10%, 4%); }
+}
+@keyframes wig2 {
+  0%, 100% { transform: rotate(8deg) translate(12%, -4%); }
+  50% { transform: rotate(4deg) translate(8%, 0); }
+}
+@keyframes wig3 {
+  0%, 100% { transform: rotate(-4deg) translate(6%, 10%); }
+  50% { transform: rotate(-1deg) translate(2%, 6%); }
+}
+@keyframes wig4 {
+  0%, 100% { transform: rotate(11deg) translate(-4%, -8%); }
+  50% { transform: rotate(7deg) translate(0, -4%); }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hero-art.placed:hover a {
+    left: var(--hx, 22%);
+    top: var(--hy, 14%);
+    width: var(--hw, 56%);
+    height: var(--hh, 70%);
+    z-index: var(--hz, 2);
+    transform: none;
+    animation: none;
+    box-shadow: 0 18px 40px rgba(0,0,0,.45);
+  }
+}
 
 .section-head { padding: 80px 0 28px; display: grid; gap: 12px; }
 .section-head h2, .services h2, .about h2, .contact h2 {
@@ -276,7 +335,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 32px; }
   .hero-art { grid-template-columns: 1fr 1fr; }
-  .hero-art.placed { aspect-ratio: 1 / 1; }
+  .hero-art.placed a { animation-duration: 8s; }
   .card, .card[data-ratio="16-9"], .card[data-ratio="9-16"], .card[data-ratio="4-5"], .card[data-ratio="1-1"] {
     grid-column: span 12;
   }

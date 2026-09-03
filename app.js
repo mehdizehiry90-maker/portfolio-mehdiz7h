@@ -78,13 +78,10 @@ function applySite(s) {
   const heroWorks = featured.length ? featured : works.slice(0, 4);
   const art = document.getElementById("hero_art");
   if (art) {
-    const placed = heroWorks.some((w) => w.pos);
-    art.classList.toggle("placed", placed);
+    art.classList.add("placed");
     art.innerHTML = heroWorks.map((w) => {
-      const p = w.pos;
-      const st = p
-        ? `left:${+p.x}%;top:${+p.y}%;width:${+p.w}%;height:${+p.h}%;z-index:${p.z || 1}`
-        : "";
+      const p = w.pos || {};
+      const st = `--hx:${p.x ?? 22}%;--hy:${p.y ?? 14}%;--hw:${p.w ?? 56}%;--hh:${p.h ?? 70}%;--hz:${p.z || 2}`;
       return `<a href="/work/${esc(w.id)}" data-ratio="${esc(w.ratio || "1-1")}" style="${st}"><img src="${esc(webp(w.src))}" alt="${esc(w.title)}" loading="eager" onerror="this.src=this.src.replace('.webp','.jpg')" /></a>`;
     }).join("");
   }
@@ -109,7 +106,14 @@ function applySite(s) {
       </article>`;
     }).join("");
     const start = document.getElementById("start_project");
-    if (start && plats[0] && plats[0].url) start.href = plats[0].url;
+    if (start) {
+      const show = c.cta_show !== false;
+      start.style.display = show ? "" : "none";
+      if (c.cta_label) start.innerHTML = `${esc(c.cta_label)} <span class="arr">→</span>`;
+      start.href = c.cta_url || (plats[0] && plats[0].url) || start.href;
+    }
+    const ask = document.querySelector(".ask");
+    if (ask && c.ask) ask.textContent = c.ask;
     box.querySelectorAll(".soc-id").forEach((btn) => {
       btn.addEventListener("click", async () => {
         const t = btn.dataset.copy || "";
