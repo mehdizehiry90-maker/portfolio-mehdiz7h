@@ -55,6 +55,13 @@ function applySite(s) {
   setRich("line2", h.line2, W.line2);
   setRich("line3", h.line3, W.line3);
   set("hero_meta", h.meta);
+  const dn = document.querySelector(".display-name");
+  if (dn) dn.textContent = h.display_name || "MEHDI ZHEIRY";
+  const hbtn = document.querySelector(".hero-copy .btn");
+  if (hbtn && h.btn) {
+    const arr = hbtn.querySelector(".arr");
+    hbtn.innerHTML = `${esc(h.btn)} <span class="arr" aria-hidden="true">${arr ? arr.textContent : "→"}</span>`;
+  }
   set("work_kicker", h.work_kicker || "Selected Work");
   set("work_title", h.work_title || "پروژه‌ها");
   set("kicker", s.about.kicker);

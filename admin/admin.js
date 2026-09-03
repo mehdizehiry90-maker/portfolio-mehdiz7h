@@ -69,6 +69,12 @@ function fill() {
   $("#contact_title").value = (site.contact || {}).title || "";
   $("#contact_text").value = (site.contact || {}).text || "";
   $("#copy_hint") && ($("#copy_hint").value = (site.contact || {}).copy_hint || "کلیک کن تا کپی بشه");
+  if ($("#cta_label")) $("#cta_label").value = (site.contact || {}).cta_label || "START A PROJECT";
+  if ($("#cta_url")) $("#cta_url").value = (site.contact || {}).cta_url || ((site.contact.platforms || [])[0] || {}).url || "";
+  if ($("#cta_show")) $("#cta_show").checked = (site.contact || {}).cta_show !== false;
+  if ($("#display_name")) $("#display_name").value = site.hero.display_name || "MEHDI ZHEIRY";
+  if ($("#hero_btn")) $("#hero_btn").value = site.hero.btn || "دیدن کارها";
+  if ($("#ask")) $("#ask").value = (site.contact || {}).ask || "Have a project in mind?";
   if (!site.contact) site.contact = {};
   if (!site.contact.platforms) {
     site.contact.platforms = [];
@@ -115,6 +121,8 @@ function collect() {
     spine: $("#spine").value,
     work_kicker: $("#work_kicker").value,
     work_title: $("#work_title").value,
+    display_name: ($("#display_name") && $("#display_name").value) || "",
+    btn: ($("#hero_btn") && $("#hero_btn").value) || "",
   };
   site.about = {
     kicker: $("#kicker").value,
@@ -129,6 +137,10 @@ function collect() {
     title: $("#contact_title").value,
     text: $("#contact_text").value,
     copy_hint: ($("#copy_hint") && $("#copy_hint").value) || "کلیک کن تا کپی بشه",
+    cta_label: ($("#cta_label") && $("#cta_label").value) || "START A PROJECT",
+    cta_url: ($("#cta_url") && $("#cta_url").value) || "",
+    cta_show: $("#cta_show") ? $("#cta_show").checked : true,
+    ask: ($("#ask") && $("#ask").value) || "",
     platforms: site.contact.platforms || [],
   };
   site.weights = {
@@ -184,6 +196,7 @@ function renderWorks() {
       </div>`;
     box.appendChild(el);
   });
+  renderCollage();
 }
 
 function renderPlats() {
@@ -268,6 +281,15 @@ document.querySelector(".tabs").addEventListener("click", (e) => {
   if (!b) return;
   document.querySelectorAll(".tabs button").forEach((x) => x.classList.toggle("on", x === b));
   document.querySelectorAll(".pane").forEach((p) => p.classList.toggle("on", p.id === "tab-" + b.dataset.tab));
+  if (b.dataset.tab === "works") renderCollage();
+});
+
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-pick]");
+  if (!btn) return;
+  const i = +btn.dataset.pick;
+  if (!setFeatured(i, !site.works[i].featured)) return;
+  renderWorks();
 });
 
 const DEF_POS = [
@@ -287,13 +309,25 @@ function renderCollage() {
   const board = $("#collage");
   if (!board || !site) return;
   const list = featuredList();
-  board.innerHTML = list.map((w, i) => {
-    const p = ensurePos(w, i);
-    return `<div class="citem" data-id="${escapeAttr(w.id)}" style="left:${p.x}%;top:${p.y}%;width:${p.w}%;height:${p.h}%;z-index:${p.z || i + 1}">
-      <img src="/${escapeAttr(w.src)}" alt="" />
-      <span class="rz"></span>
-    </div>`;
-  }).join("");
+  if (!list.length) {
+    board.innerHTML = `<p class="cempty">روی عکس‌های پایین کلیک کن (حداکثر ۴ تا)</p>`;
+  } else {
+    board.innerHTML = list.map((w, i) => {
+      const p = ensurePos(w, i);
+      return `<div class="citem" data-id="${escapeAttr(w.id)}" style="left:${p.x}%;top:${p.y}%;width:${p.w}%;height:${p.h}%;z-index:${p.z || i + 1}">
+        <img src="/${escapeAttr(w.src)}" alt="" />
+        <span class="rz"></span>
+      </div>`;
+    }).join("");
+  }
+  const pick = $("#pick");
+  if (pick) {
+    pick.innerHTML = (site.works || []).map((w, i) =>
+      `<button type="button" class="pthumb ${w.featured ? "on" : ""}" data-pick="${i}" title="${escapeAttr(w.title)}">
+        <img src="/${escapeAttr(w.src)}" alt="" />
+      </button>`
+    ).join("");
+  }
 }
 
 function setFeatured(i, on) {

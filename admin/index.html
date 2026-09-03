@@ -77,6 +77,11 @@
       position: absolute; right: 2px; bottom: 2px; width: 16px; height: 16px;
       background: var(--acc); cursor: nwse-resize; border-radius: 2px;
     }
+    .cempty { color: #666; display: grid; place-items: center; height: 100%; padding: 24px; text-align: center; }
+    .pick { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 18px; }
+    .pthumb { width: 72px; height: 72px; padding: 0; border: 2px solid #333; border-radius: 10px; overflow: hidden; background: #111; cursor: pointer; }
+    .pthumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .pthumb.on { border-color: var(--acc); }
   </style>
 </head>
 <body>
@@ -125,6 +130,8 @@
       <div class="wgt"><input id="line2" /><select id="w_line2"></select></div>
       <label>خط ۳ فارسی</label>
       <div class="wgt"><input id="line3" /><select id="w_line3"></select></div>
+      <label>اسم انگلیسی هیرو</label><input id="display_name" />
+      <label>متن دکمه هیرو</label><input id="hero_btn" />
       <label>متای پایین</label><input id="meta" />
       <div class="grid2">
         <div><label>عدد گوشه (مثل 01)</label><input id="mark_num" /></div>
@@ -140,7 +147,8 @@
 
     <section class="pane" id="tab-works">
       <div class="collage-wrap">
-        <p style="color:var(--mute);margin-bottom:10px">کلاژ هیرو: عکس را بکشید. گوشهٔ سبز = اندازه. بعد ذخیره را بزنید.</p>
+        <p style="color:var(--mute);margin-bottom:10px">اول از ردیف عکس‌ها انتخاب کن (حداکثر ۴). بعد داخل مربع بکش / گوشه سبز اندازه. ذخیره را بزن.</p>
+        <div class="pick" id="pick"></div>
         <div class="collage-board" id="collage"></div>
       </div>
       <p style="color:var(--mute);margin-bottom:12px">تیک «کلاژ هیرو» حداکثر ۴ کار. نسبت گالری جداست.</p>
@@ -173,6 +181,13 @@
       <label>متن</label>
       <div class="wgt"><textarea id="contact_text"></textarea><select id="w_contact_text"></select></div>
       <label>متن زیر آیدی (کپی)</label><input id="copy_hint" />
+      <label>خط Have a project…</label><input id="ask" />
+      <label style="display:flex;align-items:center;gap:8px;margin-top:16px">
+        <input id="cta_show" type="checkbox" style="width:auto" checked />
+        نمایش دکمه START A PROJECT
+      </label>
+      <label>متن دکمه</label><input id="cta_label" />
+      <label>لینک دکمه</label><input id="cta_url" placeholder="https://t.me/mehdiz7h" />
       <p style="color:var(--mute);margin:16px 0 10px">هر پلتفرم: لوگو + لینک کامل پیوی + آیدی/شماره که روی سایت دیده شود.</p>
       <button class="btn" type="button" id="addplat">افزودن پلتفرم</button>
       <div class="works" id="plats" style="margin-top:14px"></div>
