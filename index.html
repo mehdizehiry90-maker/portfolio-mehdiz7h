@@ -3,64 +3,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>mehdiz7h — Social · Cover · Thumbnail</title>
+  <title>MEHDI ZHEIRY — Graphic Designer</title>
+  <meta name="description" content="Graphic designer — social posts, covers, YouTube thumbnails. mehdiz7h" />
+  <meta property="og:title" content="MEHDI ZHEIRY — Graphic Designer" />
+  <meta property="og:description" content="Social · Cover · YouTube. طراحی‌هایی که STOP THE SCROLL." />
+  <meta property="og:image" content="/images/og.jpg" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" href="images/favicon.png" id="favicon" />
-  <link rel="apple-touch-icon" href="images/apple-touch.png" id="appleicon" />
+  <link rel="apple-touch-icon" href="images/apple-touch.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="noise" aria-hidden="true"></div>
-  <div class="cursor" aria-hidden="true"></div>
-  <div class="spine" id="spine" aria-hidden="true">GRAPHIC DESIGN · SOCIAL · COVER · YT</div>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+  <div class="cursor" id="cursor" aria-hidden="true"><span>VIEW<br>PROJECT</span></div>
 
-  <header class="nav">
+  <header class="nav" id="nav">
     <a class="logo" href="#top">
-      <img src="images/logo.png" alt="" id="logoimg" />
+      <img src="images/logo.png" alt="" id="logoimg" width="36" height="36" />
       <span id="brand">mehdiz7h</span>
     </a>
     <nav>
-      <a href="#work">کارها</a>
-      <a href="#about">معرفی</a>
-      <a href="#contact">ارتباط</a>
+      <a href="#work" data-nav="work">کارها</a>
+      <a href="#services" data-nav="services">خدمات</a>
+      <a href="#about" data-nav="about">معرفی</a>
+      <a href="#contact" data-nav="contact">ارتباط</a>
     </nav>
-    <span class="year" id="year">۲۰۲۶</span>
   </header>
 
   <main id="top">
-    <section class="hero">
-      <div class="hero-mark">
-        <span id="mark_num">01</span>
-        <span id="mark_label">STUDIO</span>
+    <section class="hero reveal">
+      <div class="hero-copy">
+        <p class="meta" id="eyebrow_en">Graphic Designer</p>
+        <p class="display-name">MEHDI ZHEIRY</p>
+        <h1>
+          <span class="line fa" id="line1">طراحی‌هایی که</span>
+          <span class="line en" id="line2" dir="ltr">STOP THE SCROLL</span>
+          <span class="line fa faint" id="line3">و کلیک می‌گیرند.</span>
+        </h1>
+        <p class="lede" id="hero_meta">پست سوشال مدیا · کاور · تامنیل یوتیوب</p>
+        <a class="btn" href="#work">دیدن کارها <span class="arr" aria-hidden="true">→</span></a>
       </div>
-      <p class="eyebrow">
-        <span id="eyebrow_en">Graphic Designer</span>
-        <span class="dot"></span>
-        <span id="eyebrow_sub">Social / Cover / YouTube</span>
-      </p>
-      <h1>
-        <span class="line fa" id="line1">طراحی‌هایی که</span>
-        <span class="line en" id="line2" dir="ltr">STOP THE SCROLL</span>
-        <span class="line fa faint" id="line3">و کلیک می‌گیرند.</span>
-      </h1>
-      <div class="hero-meta">
-        <p id="hero_meta">پست سوشال مدیا · کاور · تامنیل یوتیوب</p>
-        <a class="scroll" href="#work">دیدن کارها <i></i></a>
-      </div>
+      <div class="hero-art" id="hero_art" aria-hidden="true"></div>
     </section>
 
-    <div class="ticker" aria-hidden="true">
-      <div class="ticker-track" id="ticker_track"></div>
-    </div>
-
     <section id="work" class="work">
-      <div class="work-head">
-        <div>
-          <p class="kicker" id="work_kicker">Archive / 2026</p>
-          <h2 id="work_title">Selected Work</h2>
-        </div>
+      <div class="section-head reveal">
+        <p class="kicker" id="work_kicker">Selected Work</p>
+        <h2 id="work_title">پروژه‌ها</h2>
         <div class="filters" role="tablist">
           <button class="is-on" data-filter="all">همه</button>
           <button data-filter="social">سوشال</button>
@@ -68,46 +61,74 @@
           <button data-filter="yt">تامنیل</button>
         </div>
       </div>
-
-      <div class="grid" id="grid"></div>
+      <div class="masonry" id="grid"></div>
+      <div class="center">
+        <button class="btn ghost" type="button" id="more">Load more</button>
+      </div>
     </section>
 
-    <section id="about" class="about">
-      <p class="kicker" id="kicker">About — کوتاه</p>
+    <section id="services" class="services">
+      <p class="kicker reveal">Services</p>
+      <h2 class="reveal">چه کار می‌کنم</h2>
+      <div class="svc-rows">
+        <a class="svc" href="#work" data-filter-jump="social">
+          <span class="num">01</span>
+          <div>
+            <h3>SOCIAL MEDIA</h3>
+            <p>Posts / Stories / Campaigns</p>
+          </div>
+          <img src="images/work-orange.webp" alt="" />
+        </a>
+        <a class="svc" href="#work" data-filter-jump="yt">
+          <span class="num">02</span>
+          <div>
+            <h3>YOUTUBE</h3>
+            <p>Thumbnails / Covers</p>
+          </div>
+          <img src="images/work-yt-subs.webp" alt="" />
+        </a>
+        <a class="svc" href="#work" data-filter-jump="cover">
+          <span class="num">03</span>
+          <div>
+            <h3>COVER DESIGN</h3>
+            <p>Artworks / Packaging</p>
+          </div>
+          <img src="images/cover-01.webp" alt="" />
+        </a>
+      </div>
+    </section>
+
+    <section id="about" class="about reveal">
+      <p class="kicker" id="kicker">About</p>
       <h2 id="about_title">من <em>mehdiz7h</em> هستم.</h2>
-      <p class="bio" id="bio">
-        طراح پست‌های سوشال مدیا، کاور و تامنیل یوتیوب.
-        کارم اینه که ایده رو به تصویری تبدیل کنم که تو فید وایسه،
-        کلیک بگیره، و برند رو یک‌جور دیده بشه.
-      </p>
-      <ul class="tags" id="tags">
-        <li>Social Posts</li>
-        <li>Covers</li>
-        <li>YouTube Thumbnails</li>
-        <li>Photoshop</li>
-      </ul>
+      <p class="bio" id="bio"></p>
+      <ul class="tags" id="tags"></ul>
     </section>
 
-    <section id="contact" class="contact">
+    <section id="contact" class="contact reveal">
       <p class="kicker" id="contact_kicker">Contact</p>
-      <h2 id="contact_title">ارتباط با من</h2>
-      <p class="bio" id="contact_text">برای سفارش کاور، تامنیل یا پست سوشال پیام بده.</p>
+      <h2 id="contact_title">LET'S WORK TOGETHER</h2>
+      <p class="bio" id="contact_text"></p>
+      <p class="ask">Have a project in mind?</p>
       <div class="socials" id="socials"></div>
+      <a class="btn" id="start_project" href="https://t.me/mehdiz7h" target="_blank" rel="noopener">START A PROJECT <span class="arr">→</span></a>
     </section>
   </main>
 
   <footer class="foot">
-    <span id="fleft">© 2026 mehdiz7h</span>
-    <span class="en" id="fright">Selected works</span>
+    <span id="fleft"></span>
+    <span class="en" id="fright"></span>
   </footer>
+  <div class="iran-clock" id="iran_clock"></div>
 
   <div class="lb" id="lb" hidden>
-    <button class="lb-x" aria-label="بستن">×</button>
+    <button class="lb-x" type="button" aria-label="بستن">×</button>
+    <button class="lb-nav prev" type="button" aria-label="قبلی">←</button>
+    <button class="lb-nav next" type="button" aria-label="بعدی">→</button>
     <img alt="" />
     <div class="lb-meta"><small></small><strong></strong></div>
   </div>
 
-  <div class="iran-clock" id="iran_clock"></div>
   <script src="app.js"></script>
 </body>
 </html>

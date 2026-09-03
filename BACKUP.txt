@@ -1,0 +1,12 @@
+نسخه قبل از بازطراحی:
+
+فایل فشرده:
+/home/user/backups/portfolio-before-redesign-2026-09-03.tgz
+
+شاخه گیت (اگر روی همین ریپو):
+backup-pre-redesign
+
+بازگشت روی سرور (بعد از کپی بکاپ):
+  cd /root
+  tar -xzf portfolio-before-redesign-2026-09-03.tgz -C /root/portfolio
+  systemctl restart portfolio

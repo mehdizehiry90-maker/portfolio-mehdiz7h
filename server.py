@@ -172,12 +172,17 @@ def home():
     return send_from_directory(ROOT, "index.html")
 
 
+@app.get("/work/<wid>")
+def project_page(wid):
+    return send_from_directory(ROOT, "project.html")
+
+
 @app.get("/<path:path>")
 def static_files(path):
     target = ROOT / path
     if target.is_file() and ROOT in target.resolve().parents:
         return send_from_directory(ROOT, path)
-    return ("not found", 404)
+    return send_from_directory(ROOT, "404.html"), 404
 
 
 if __name__ == "__main__":
