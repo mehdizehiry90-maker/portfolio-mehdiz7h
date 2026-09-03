@@ -171,7 +171,11 @@ function renderWorks() {
           </select>
           <input data-k="kind" data-i="${i}" value="${escapeAttr(w.kind || "")}" placeholder="برچسب" />
         </div>
-        <p style="margin:8px 0 0;color:#666;font-size:.75rem">نسبت نمایش در گالری</p>
+        <label style="display:flex;align-items:center;gap:8px;margin-top:8px;font-size:.8rem;color:#bbb">
+          <input type="checkbox" data-k="featured" data-i="${i}" ${w.featured ? "checked" : ""} />
+          کلاژ هیرو (Selected Work)
+        </label>
+        <p style="margin:8px 0 0;color:#666;font-size:.75rem">نسبت نمایش در گالری — حداکثر ۴ تیک هیرو</p>
       </div>
       <div style="display:flex;flex-direction:column;gap:6px">
         <button class="btn ghost" type="button" data-up="${i}">↑</button>
@@ -266,12 +270,37 @@ document.querySelector(".tabs").addEventListener("click", (e) => {
   document.querySelectorAll(".pane").forEach((p) => p.classList.toggle("on", p.id === "tab-" + b.dataset.tab));
 });
 
+function setFeatured(i, on) {
+  if (on) {
+    const n = site.works.filter((w) => w.featured).length;
+    if (n >= 4) {
+      toast("حداکثر ۴ کار در کلاژ هیرو");
+      return false;
+    }
+  }
+  site.works[i].featured = on;
+  return true;
+}
+
 $("#works").addEventListener("input", (e) => {
   const t = e.target;
   const i = +t.dataset.i;
   if (Number.isNaN(i)) return;
-  if (t.dataset.k === "wide") site.works[i].wide = t.checked;
-  else site.works[i][t.dataset.k] = t.value;
+  if (t.dataset.k === "featured" || t.dataset.k === "wide") return;
+  site.works[i][t.dataset.k] = t.value;
+});
+
+$("#works").addEventListener("change", (e) => {
+  const t = e.target;
+  const i = +t.dataset.i;
+  if (Number.isNaN(i)) return;
+  if (t.dataset.k === "featured") {
+    if (!setFeatured(i, t.checked)) t.checked = false;
+  } else if (t.dataset.k === "wide") {
+    site.works[i].wide = t.checked;
+  } else if (t.dataset.k) {
+    site.works[i][t.dataset.k] = t.value;
+  }
 });
 
 $("#works").addEventListener("click", (e) => {

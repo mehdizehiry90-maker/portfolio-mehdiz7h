@@ -67,10 +67,12 @@ function applySite(s) {
   set("fright", s.footer.right);
 
   const works = s.works || [];
+  const featured = works.filter((w) => w.featured).slice(0, 4);
+  const heroWorks = featured.length ? featured : works.slice(0, 4);
   const art = document.getElementById("hero_art");
   if (art) {
-    art.innerHTML = works.slice(0, 4).map((w) =>
-      `<a href="/work/${esc(w.id)}"><img src="${esc(webp(w.src))}" alt="${esc(w.title)}" loading="eager" /></a>`
+    art.innerHTML = heroWorks.map((w) =>
+      `<a href="/work/${esc(w.id)}" data-ratio="${esc(w.ratio || "1-1")}"><img src="${esc(webp(w.src))}" alt="${esc(w.title)}" loading="eager" onerror="this.src=this.src.replace('.webp','.jpg')" /></a>`
     ).join("");
   }
 
