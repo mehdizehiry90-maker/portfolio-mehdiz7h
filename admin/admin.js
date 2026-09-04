@@ -285,11 +285,31 @@ document.querySelector(".tabs").addEventListener("click", (e) => {
 });
 
 document.addEventListener("click", (e) => {
-  const btn = e.target.closest("[data-pick]");
-  if (!btn) return;
-  const i = +btn.dataset.pick;
-  if (!setFeatured(i, !site.works[i].featured)) return;
-  renderWorks();
+  const pickBtn = e.target.closest("[data-pick]");
+  if (pickBtn) {
+    const i = +pickBtn.dataset.pick;
+    if (!setFeatured(i, !site.works[i].featured)) return;
+    renderWorks();
+    return;
+  }
+  const up = e.target.closest("[data-layer-up]");
+  const dn = e.target.closest("[data-layer-dn]");
+  if (!up && !dn) return;
+  const list = featuredList();
+  const id = (up || dn).dataset.layerUp || (up || dn).dataset.layerDn;
+  const i = list.findIndex((w) => w.id === id);
+  if (i < 0) return;
+  const j = up ? i - 1 : i + 1;
+  if (j < 0 || j >= list.length) return;
+  const ids = list.map((w) => w.id);
+  const t = ids[i];
+  ids[i] = ids[j];
+  ids[j] = t;
+  ids.forEach((id, n) => {
+    const w = site.works.find((x) => x.id === id);
+    if (w) w.layer = n + 1;
+  });
+  renderCollage();
 });
 
 const DEF_POS = [
@@ -391,8 +411,15 @@ function setFeatured(i, on) {
       p.x = Math.max(0, Math.min(100 - p.w, start.p.x + dx));
       p.y = Math.max(0, Math.min(100 - p.h, start.p.y + dy));
     } else {
-      p.w = Math.max(12, Math.min(100 - p.x, start.p.w + dx));
-      p.h = Math.max(12, Math.min(100 - p.y, start.p.h + dy));
+      const ratio = start.p.w / Math.max(start.p.h, 0.01);
+      let nw = Math.max(14, Math.min(100 - start.p.x, start.p.w + dx));
+      let nh = nw / ratio;
+      if (start.p.y + nh > 100) {
+        nh = 100 - start.p.y;
+        nw = nh * ratio;
+      }
+      p.w = nw;
+      p.h = nh;
     }
     start.el.style.left = p.x + "%";
     start.el.style.top = p.y + "%";

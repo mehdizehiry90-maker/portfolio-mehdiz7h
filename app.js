@@ -82,7 +82,7 @@ function applySite(s) {
     art.innerHTML = heroWorks.map((w) => {
       const p = w.pos || {};
       const st = `--hx:${p.x ?? 22}%;--hy:${p.y ?? 14}%;--hw:${p.w ?? 56}%;--hh:${p.h ?? 70}%;--hz:${p.z || 2}`;
-      return `<a href="/work/${esc(w.id)}" data-ratio="${esc(w.ratio || "1-1")}" style="${st}"><img src="${esc(webp(w.src))}" alt="${esc(w.title)}" loading="eager" onerror="this.src=this.src.replace('.webp','.jpg')" /></a>`;
+      return `<a href="/work/${esc(w.id)}" data-ratio="${esc(w.ratio || "1-1")}" style="${st}"><span class="spin"><img src="${esc(webp(w.src))}" alt="${esc(w.title)}" loading="eager" onerror="this.src=this.src.replace('.webp','.jpg')" /></span></a>`;
     }).join("");
   }
 
