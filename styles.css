@@ -235,7 +235,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
     width: var(--hw, 56%);
     height: var(--hh, 70%);
     z-index: var(--hz, 2);
-    box-shadow: 0 18px 40px rgba(0,0,0,.45);
+    box-shadow: none;
   }
   .hero-art.placed:hover .spin {
     animation: none;
@@ -356,6 +356,11 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   .nav nav { gap: 8px; font-size: 12px; }
   .logo span { display: none; }
   .hero-art.placed a .spin { animation-duration: 8s; }
+  .card, .card[data-ratio="16-9"], .card[data-ratio="9-16"], .card[data-ratio="4-5"], .card[data-ratio="1-1"] {
+    grid-column: span 12;
+  }
+  .svc { grid-template-columns: 48px 1fr; }
+  .svc img { display: none; }
   .more-grid { grid-template-columns: 1fr; }
   .cursor { display: none !important; }
 }
