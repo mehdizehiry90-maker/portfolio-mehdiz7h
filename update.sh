@@ -6,6 +6,7 @@ mkdir -p /root/portfolio-backup
 cp -a data/site.json /root/portfolio-backup/site.json
 cp -a data/config.json /root/portfolio-backup/config.json 2>/dev/null || true
 git pull origin main
+python3 -m pip install -q -r requirements.txt --break-system-packages 2>/dev/null || python3 -m pip install -q -r requirements.txt
 cp -a /root/portfolio-backup/site.json data/site.json
 cp -a /root/portfolio-backup/config.json data/config.json 2>/dev/null || true
 systemctl restart portfolio

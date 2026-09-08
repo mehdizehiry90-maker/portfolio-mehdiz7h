@@ -25,8 +25,8 @@ function setRich(id, s, w) {
   if (!el || s == null) return;
   el.innerHTML = rich(s, w);
 }
-function webp(src) {
-  return String(src || "").replace(/\.(jpe?g|png)$/i, ".webp");
+function pic(src) {
+  return String(src || "").replace(/^\//, "");
 }
 function catLabel(c) {
   return c === "yt" ? "YouTube" : c === "cover" ? "Cover" : "Social";
@@ -82,7 +82,7 @@ function applySite(s) {
     art.innerHTML = heroWorks.map((w) => {
       const p = w.pos || {};
       const st = `--hx:${p.x ?? 22}%;--hy:${p.y ?? 14}%;--hw:${p.w ?? 56}%;--hh:${p.h ?? 70}%;--hz:${p.z || 2}`;
-      return `<a href="/work/${esc(w.id)}" data-ratio="${esc(w.ratio || "1-1")}" style="${st}"><span class="spin"><img src="${esc(webp(w.src))}" alt="${esc(w.title)}" loading="eager" onerror="this.src=this.src.replace('.webp','.jpg')" /></span></a>`;
+      return `<a href="/work/${esc(w.id)}" data-ratio="${esc(w.ratio || "1-1")}" style="${st}"><span class="spin"><img src="${esc(pic(w.src))}" alt="${esc(w.title)}" loading="eager" /></span></a>`;
     }).join("");
   }
 
@@ -140,7 +140,7 @@ function renderGrid() {
     const year = w.year || SITE.year || "2026";
     return `<a class="card" href="/work/${esc(w.id)}" data-cat="${esc(w.cat)}" data-ratio="${esc(w.ratio||"1-1")}" data-i="${i}">
       <div class="ph"></div>
-      <img src="${esc(webp(w.src))}" alt="${esc(w.title)}" loading="lazy" />
+      <img src="${esc(pic(w.src))}" alt="${esc(w.title)}" loading="lazy" decoding="async" />
       <div class="ov">
         <small>${esc(catLabel(w.cat))} · ${esc(year)}</small>
         <b>${esc(w.title)}</b>
@@ -151,7 +151,8 @@ function renderGrid() {
   grid.querySelectorAll("img").forEach((img) => {
     img.addEventListener("load", () => img.previousElementSibling?.remove());
     img.addEventListener("error", () => {
-      img.src = img.src.replace(".webp", ".jpg");
+      const s = img.getAttribute("src") || "";
+      if (s.endsWith(".webp")) img.src = s.replace(/\.webp$/i, ".jpg");
     });
   });
   const more = document.getElementById("more");

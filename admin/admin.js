@@ -7,6 +7,10 @@ const toast = (t) => {
   el.style.display = "block";
   setTimeout(() => (el.style.display = "none"), 1800);
 };
+const busy = (on) => {
+  const el = $("#busy");
+  if (el) el.classList.toggle("on", !!on);
+};
 
 async function j(url, opt) {
   const r = await fetch(url, {
@@ -187,7 +191,12 @@ function renderWorks() {
           <input type="checkbox" data-k="featured" data-i="${i}" ${w.featured ? "checked" : ""} />
           کلاژ هیرو (Selected Work)
         </label>
-        <p style="margin:8px 0 0;color:#666;font-size:.75rem">نسبت نمایش در گالری — حداکثر ۴ تیک هیرو</p>
+        <label style="margin-top:10px">متن ایده (صفحه پروژه)</label>
+        <textarea data-k="idea" data-i="${i}" placeholder="ایده اولیه…" style="min-height:64px">${escapeAttr(w.idea || "")}</textarea>
+        <label style="margin-top:8px">عکس ایده اولیه</label>
+        ${w.idea_src ? `<img src="/${escapeAttr(w.idea_src)}" alt="" style="width:72px;height:72px;object-fit:contain;margin:6px 0;border-radius:8px" />` : ""}
+        <input type="file" accept="image/*" data-idea="${i}" />
+        <p style="margin:8px 0 0;color:#666;font-size:.75rem">نسبت گالری — حداکثر ۴ تیک هیرو</p>
       </div>
       <div style="display:flex;flex-direction:column;gap:6px">
         <button class="btn ghost" type="button" data-up="${i}">↑</button>
@@ -272,8 +281,15 @@ $("#out").addEventListener("click", async () => {
 
 $("#save").addEventListener("click", async () => {
   collect();
-  await j("/api/site", { method: "POST", body: JSON.stringify(site) });
-  toast("ذخیره شد");
+  busy(true);
+  try {
+    await j("/api/site", { method: "POST", body: JSON.stringify(site) });
+    toast("ذخیره شد");
+  } catch (err) {
+    toast(err.message || "ذخیره نشد");
+  } finally {
+    busy(false);
+  }
 });
 
 document.querySelector(".tabs").addEventListener("click", (e) => {
@@ -486,20 +502,26 @@ $("#addwork").addEventListener("click", async () => {
   if (!file) return toast("اول عکس را انتخاب کن");
   const fd = new FormData();
   fd.append("file", file);
-  const r = await fetch("/api/upload", { method: "POST", body: fd, credentials: "same-origin" });
-  const data = await r.json();
-  if (!r.ok) return toast(data.error || "آپلود نشد");
-  site.works.unshift({
-    id: "w" + Date.now(),
-    src: data.src,
-    title: "کار جدید",
-    kind: "Social Post",
-    cat: "social",
-    ratio: "1-1",
-  });
-  $("#upfile").value = "";
-  renderWorks();
-  toast("اضافه شد — ذخیره را بزن");
+  busy(true);
+  try {
+    const r = await fetch("/api/upload", { method: "POST", body: fd, credentials: "same-origin" });
+    const data = await r.json();
+    if (!r.ok) return toast(data.error || "آپلود نشد");
+    site.works.unshift({
+      id: "w" + Date.now(),
+      src: data.src,
+      title: "کار جدید",
+      kind: "Social Post",
+      cat: "social",
+      ratio: "1-1",
+      idea: "",
+    });
+    $("#upfile").value = "";
+    renderWorks();
+    toast("اضافه شد — ذخیره را بزن");
+  } finally {
+    busy(false);
+  }
 });
 
 (function bindPlats() {

@@ -348,7 +348,15 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .lb-meta { position: absolute; bottom: 20px; inset-inline: 20px; display: flex; gap: 10px; }
 
 .case { padding: 40px 0 80px; }
-.case .hero-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; background: #111; margin: 24px 0 32px; }
+.case .hero-img {
+  width: 100%; max-height: 78vh; height: auto; aspect-ratio: auto;
+  object-fit: contain; background: transparent; margin: 24px 0 32px; border-radius: 12px;
+}
+.case .idea-img, .case .finals img {
+  width: 100%; max-height: 80vh; object-fit: contain; background: transparent;
+  margin: 12px 0 20px; border-radius: 12px;
+}
+.case .finals { display: grid; gap: 16px; }
 .case-meta { display: flex; gap: 24px; flex-wrap: wrap; color: var(--mute); font-size: 13px; font-family: var(--font-en); margin-bottom: 40px; }
 .case h1 { font-size: clamp(40px, 6vw, 72px); font-weight: 800; }
 .case h3 { font-family: var(--font-en); letter-spacing: .16em; color: var(--acc); font-size: 13px; margin: 40px 0 12px; }

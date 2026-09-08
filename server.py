@@ -46,7 +46,7 @@ def save_site(data):
 cfg0 = load_cfg()
 app = Flask(__name__, static_folder=None)
 app.secret_key = os.environ.get("SECRET_KEY") or cfg0["secret_key"]
-app.config["MAX_CONTENT_LENGTH"] = 12 * 1024 * 1024
+app.config["MAX_CONTENT_LENGTH"] = 20 * 1024 * 1024
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
@@ -63,7 +63,11 @@ def login_required(fn):
 
 @app.after_request
 def headers(res):
-    res.headers["Cache-Control"] = "no-store"
+    p = request.path or ""
+    if p.startswith("/images/") or p.startswith("/fonts/"):
+        res.headers["Cache-Control"] = "public, max-age=604800"
+    else:
+        res.headers["Cache-Control"] = "no-store"
     return res
 
 
@@ -139,10 +143,24 @@ def api_upload():
     ext = Path(f.filename).suffix.lower()
     if ext not in ALLOWED_EXT:
         return jsonify({"error": "فقط jpg / png / webp / gif"}), 400
-    name = f"{uuid.uuid4().hex}{ext}"
-    dest = UPLOAD_DIR / secure_filename(name)
-    f.save(dest)
-    return jsonify({"ok": True, "src": f"images/uploads/{dest.name}"})
+    uid = uuid.uuid4().hex
+    raw = UPLOAD_DIR / secure_filename(f"{uid}{ext}")
+    f.save(raw)
+    src = f"images/uploads/{raw.name}"
+    if ext != ".svg" and ext != ".gif":
+        try:
+            from PIL import Image
+            im = Image.open(raw)
+            im = im.convert("RGB")
+            im.thumbnail((1600, 1600))
+            webp = UPLOAD_DIR / f"{uid}.webp"
+            im.save(webp, "WEBP", quality=78, method=6)
+            src = f"images/uploads/{webp.name}"
+            if raw != webp and raw.is_file():
+                raw.unlink()
+        except Exception:
+            pass
+    return jsonify({"ok": True, "src": src})
 
 
 @app.post("/api/password")

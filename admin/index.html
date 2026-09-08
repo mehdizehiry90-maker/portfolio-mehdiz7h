@@ -88,6 +88,17 @@
     .crow img { width:40px; height:40px; object-fit:cover; border-radius:8px; flex:none; }
     .crow span { flex:1; font-size:.85rem; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .crow .btn { padding: 6px 10px; font-size: .75rem; }
+    .busy {
+      display: none; position: fixed; inset: 0; z-index: 40;
+      background: rgba(0,0,0,.45); place-items: center;
+    }
+    .busy.on { display: grid; }
+    .busy i {
+      width: 42px; height: 42px; border: 3px solid #333; border-top-color: var(--acc);
+      border-radius: 50%; animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .witem { align-items: start; }
   </style>
 </head>
 <body>
@@ -217,6 +228,7 @@
     </section>
   </div>
   <div class="toast" id="toast">ذخیره شد</div>
+  <div class="busy" id="busy" aria-hidden="true"><i></i></div>
   <script src="/admin/admin.js"></script>
 </body>
 </html>
