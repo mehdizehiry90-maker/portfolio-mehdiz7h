@@ -2,6 +2,10 @@ function esc(s) {
   return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
 }
 function pic(src) { return "/" + String(src||"").replace(/^\//,""); }
+function thumb(src, w) {
+  const s = String(src||"").replace(/^\//,"");
+  return s ? `/t/${w}/${s}` : "";
+}
 function catLabel(c) { return c === "yt" ? "YOUTUBE THUMBNAIL" : c === "cover" ? "COVER" : "SOCIAL CAMPAIGN"; }
 
 const id = decodeURIComponent(location.pathname.split("/").pop() || "");
@@ -51,13 +55,9 @@ fetch("/api/site").then((r) => r.json()).then((site) => {
       <span>${esc(year)}</span>
     </div>
     ${colors.length ? `<h3>COLORS</h3><div class="swatches">${colors.map((c) => `<span class="swatch" style="background:${esc(c)}" title="${esc(c)}"></span>`).join("")}</div>` : ""}
-    <h3>FINAL DESIGN</h3>
-    <div class="finals">
-      ${imgs.map((src, n) => `<img class="open-lb" data-i="${n}" src="${esc(pic(src))}" alt="${esc(w.title)} ${n+1}" />`).join("")}
-    </div>
     <h3>MORE PROJECTS</h3>
     <div class="more-grid">
-      ${more.map((m) => `<a href="/work/${esc(m.id)}"><img src="${esc(pic(m.src))}" alt="${esc(m.title)}" /><p>${esc(m.title)}</p></a>`).join("")}
+      ${more.map((m) => `<a href="/work/${esc(m.id)}"><img src="${esc(thumb(m.src, 600))}" alt="${esc(m.title)}" /><p>${esc(m.title)}</p></a>`).join("")}
     </div>
     <div class="case-nav">
       <a href="/work/${esc(prev.id)}">← ${esc(prev.title)}</a>

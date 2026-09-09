@@ -21,10 +21,12 @@ DATA = ROOT / "data"
 SITE_FILE = DATA / "site.json"
 CFG_FILE = DATA / "config.json"
 UPLOAD_DIR = ROOT / "images" / "uploads"
+CACHE_DIR = ROOT / "images" / "cache"
 ALLOWED_EXT = {".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg"}
 
 DATA.mkdir(exist_ok=True)
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def load_cfg():
@@ -64,7 +66,7 @@ def login_required(fn):
 @app.after_request
 def headers(res):
     p = request.path or ""
-    if p.startswith("/images/") or p.startswith("/fonts/"):
+    if p.startswith("/images/") or p.startswith("/fonts/") or p.startswith("/t/"):
         res.headers["Cache-Control"] = "public, max-age=604800"
     else:
         res.headers["Cache-Control"] = "no-store"
@@ -177,6 +179,29 @@ def api_password():
     cfg["password_hash"] = generate_password_hash(new)
     save_cfg(cfg)
     return jsonify({"ok": True})
+
+
+@app.get("/t/<int:size>/<path:path>")
+def thumb(size, path):
+    size = min(max(int(size), 80), 1800)
+    src = (ROOT / path).resolve()
+    try:
+        src.relative_to(ROOT)
+    except ValueError:
+        return send_from_directory(ROOT, "404.html"), 404
+    if not src.is_file():
+        return send_from_directory(ROOT, "404.html"), 404
+    dest = CACHE_DIR / f"{size}_{src.stem}.webp"
+    if (not dest.is_file()) or dest.stat().st_mtime < src.stat().st_mtime:
+        try:
+            from PIL import Image
+            im = Image.open(src)
+            im = im.convert("RGB")
+            im.thumbnail((size, size))
+            im.save(dest, "WEBP", quality=72, method=6)
+        except Exception:
+            return send_from_directory(src.parent, src.name)
+    return send_from_directory(CACHE_DIR, dest.name)
 
 
 @app.get("/admin")

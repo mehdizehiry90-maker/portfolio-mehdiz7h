@@ -196,11 +196,13 @@ function renderWorks() {
         <label style="margin-top:8px">عکس ایده اولیه (قبل)</label>
         ${w.idea_src ? `<img src="/${escapeAttr(w.idea_src)}" alt="" style="width:72px;height:72px;object-fit:contain;margin:6px 0;border-radius:8px" />` : ""}
         <input type="file" accept="image/*" data-idea="${i}" />
-        <p style="margin:10px 0 6px;color:#bbb;font-size:.8rem">رنگ‌های فاینال (تا ۳ تا) — روی عکس فاینال کلیک کن</p>
-        <div class="drop-wrap">
-          <img class="drop-src" data-drop="${i}" src="/${escapeAttr(w.src)}" alt="" />
-          <div class="sw-edit">${(w.colors||[]).map((c, ci) => `<button type="button" class="swatch" style="background:${escapeAttr(c)}" data-rmc="${i}" data-ci="${ci}" title="حذف"></button>`).join("")}</div>
-        </div>
+        <p style="margin:10px 0 6px;color:#bbb;font-size:.8rem">رنگ فاینال — روی عکس کلیک کن یا دکمه قطره‌چکان</p>
+        <img class="drop-src" data-drop="${i}" src="/${escapeAttr(w.src)}" alt="" />
+        <button type="button" class="btn ghost" data-eye="${i}" style="margin:8px 0">قطره‌چکان</button>
+        <div class="sw-edit">${[0,1,2].map((ci) => {
+          const c = (w.colors || [])[ci] || "";
+          return `<label class="sw-lab"><input type="color" data-col="${i}" data-ci="${ci}" value="${c || "#888888"}" /><span>${c || "—"}</span></label>`;
+        }).join("")}</div>
         <p style="margin:8px 0 0;color:#666;font-size:.75rem">نسبت گالری — حداکثر ۴ تیک هیرو</p>
       </div>
       <div style="display:flex;flex-direction:column;gap:6px">
@@ -496,8 +498,51 @@ $("#works").addEventListener("change", async (e) => {
   }
 });
 
-$("#works").addEventListener("click", (e) => {
+function setColor(i, ci, hex) {
+  if (!site.works[i].colors) site.works[i].colors = [];
+  site.works[i].colors[ci] = hex;
+  site.works[i].colors = site.works[i].colors.slice(0, 3);
+  renderWorks();
+}
+function nextColorSlot(i) {
+  const c = site.works[i].colors || [];
+  if (c.length < 3) return c.length;
+  return 0;
+}
+
+$("#works").addEventListener("click", async (e) => {
   const t = e.target;
+  const eye = e.target.closest("[data-eye]");
+  if (eye) {
+    const i = +eye.dataset.eye;
+    try {
+      if (!window.EyeDropper) throw new Error("no");
+      const r = await new EyeDropper().open();
+      setColor(i, nextColorSlot(i), r.sRGBHex);
+      toast(r.sRGBHex + " — ذخیره را بزن");
+    } catch {
+      toast("قطره‌چکان این مرورگر را پشتیبانی نمی‌کند — روی عکس کلیک کن");
+    }
+    return;
+  }
+  if (t.dataset.drop != null) {
+    const i = +t.dataset.drop;
+    const img = t;
+    if (!img.naturalWidth) return toast("صبر کن عکس لود شود");
+    const rect = img.getBoundingClientRect();
+    const x = Math.floor((e.clientX - rect.left) * (img.naturalWidth / rect.width));
+    const y = Math.floor((e.clientY - rect.top) * (img.naturalHeight / rect.height));
+    const cnv = document.createElement("canvas");
+    cnv.width = img.naturalWidth;
+    cnv.height = img.naturalHeight;
+    const ctx = cnv.getContext("2d", { willReadFrequently: true });
+    ctx.drawImage(img, 0, 0);
+    const d = ctx.getImageData(Math.max(0, Math.min(x, cnv.width - 1)), Math.max(0, Math.min(y, cnv.height - 1)), 1, 1).data;
+    const hex = "#" + [d[0], d[1], d[2]].map((n) => n.toString(16).padStart(2, "0")).join("");
+    setColor(i, nextColorSlot(i), hex);
+    toast(hex + " — ذخیره را بزن");
+    return;
+  }
   if (t.dataset.del != null) {
     const i = +t.dataset.del;
     const src = site.works[i] && site.works[i].src;
