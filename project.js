@@ -19,8 +19,8 @@ fetch("/api/site").then((r) => r.json()).then((site) => {
   const next = works[(i + 1) % works.length];
   const year = w.year || site.year || "2026";
   const client = w.client || "";
-  const idea = w.idea || "";
   const ideaImg = w.idea_src || "";
+  const colors = (w.colors || []).filter(Boolean).slice(0, 3);
   const imgs = [w.src].concat(w.gallery || []).filter(Boolean);
   document.title = `${w.title} — ${site.brand || "mehdiz7h"}`;
   document.getElementById("meta_desc").setAttribute("content", `${w.title} · ${catLabel(w.cat)}`);
@@ -28,21 +28,29 @@ fetch("/api/site").then((r) => r.json()).then((site) => {
   document.getElementById("og_img").setAttribute("content", pic(w.src));
 
   const more = works.filter((x) => x.id !== w.id).slice(0, 3);
+  const ba = ideaImg
+    ? `<h3>BEFORE AFTER</h3>
+      <div class="ba" dir="ltr">
+        <img class="ba-final" src="${esc(pic(w.src))}" alt="after" />
+        <div class="ba-clip" style="--p:50%">
+          <img src="${esc(pic(ideaImg))}" alt="before" />
+        </div>
+        <div class="ba-line" style="left:50%"></div>
+        <input class="ba-range" type="range" min="0" max="100" value="50" />
+      </div>`
+    : `<img class="hero-img" src="${esc(pic(w.src))}" alt="${esc(w.title)}" />`;
+
   root.innerHTML = `
     <p class="kicker">PROJECT</p>
     <p class="meta">${String(i+1).padStart(2,"0")} / ${esc(catLabel(w.cat))}</p>
     <h1>${esc(w.title)}</h1>
-    <img class="hero-img" src="${esc(pic(w.src))}" alt="${esc(w.title)}" />
+    ${ba}
     <div class="case-meta">
       ${client ? `<span>${esc(client)}</span>` : ""}
       <span>${esc(w.kind || w.cat)}</span>
       <span>${esc(year)}</span>
     </div>
-    ${(idea || ideaImg) ? `
-    <h3>THE IDEA</h3>
-    ${idea ? `<p class="bio">${esc(idea)}</p>` : ""}
-    ${ideaImg ? `<img class="idea-img" src="${esc(pic(ideaImg))}" alt="ایده" />` : ""}
-    ` : ""}
+    ${colors.length ? `<h3>COLORS</h3><div class="swatches">${colors.map((c) => `<span class="swatch" style="background:${esc(c)}" title="${esc(c)}"></span>`).join("")}</div>` : ""}
     <h3>FINAL DESIGN</h3>
     <div class="finals">
       ${imgs.map((src, n) => `<img class="open-lb" data-i="${n}" src="${esc(pic(src))}" alt="${esc(w.title)} ${n+1}" />`).join("")}
@@ -56,6 +64,23 @@ fetch("/api/site").then((r) => r.json()).then((site) => {
       <a href="/work/${esc(next.id)}">${esc(next.title)} →</a>
     </div>
   `;
+
+  const baEl = root.querySelector(".ba");
+  if (baEl) {
+    const clip = baEl.querySelector(".ba-clip");
+    const line = baEl.querySelector(".ba-line");
+    const range = baEl.querySelector(".ba-range");
+    const before = baEl.querySelector(".ba-clip img");
+    const fit = () => { before.style.width = baEl.offsetWidth + "px"; };
+    fit();
+    baEl.querySelector(".ba-final").addEventListener("load", fit);
+    window.addEventListener("resize", fit);
+    const setP = (p) => {
+      clip.style.width = p + "%";
+      line.style.left = p + "%";
+    };
+    range.addEventListener("input", () => setP(range.value));
+  }
 
   const lb = document.getElementById("lb");
   const lbImg = lb.querySelector("img");

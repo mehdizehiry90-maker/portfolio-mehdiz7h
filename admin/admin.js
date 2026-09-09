@@ -193,9 +193,14 @@ function renderWorks() {
         </label>
         <label style="margin-top:10px">متن ایده (صفحه پروژه)</label>
         <textarea data-k="idea" data-i="${i}" placeholder="ایده اولیه…" style="min-height:64px">${escapeAttr(w.idea || "")}</textarea>
-        <label style="margin-top:8px">عکس ایده اولیه</label>
+        <label style="margin-top:8px">عکس ایده اولیه (قبل)</label>
         ${w.idea_src ? `<img src="/${escapeAttr(w.idea_src)}" alt="" style="width:72px;height:72px;object-fit:contain;margin:6px 0;border-radius:8px" />` : ""}
         <input type="file" accept="image/*" data-idea="${i}" />
+        <p style="margin:10px 0 6px;color:#bbb;font-size:.8rem">رنگ‌های فاینال (تا ۳ تا) — روی عکس فاینال کلیک کن</p>
+        <div class="drop-wrap">
+          <img class="drop-src" data-drop="${i}" src="/${escapeAttr(w.src)}" alt="" />
+          <div class="sw-edit">${(w.colors||[]).map((c, ci) => `<button type="button" class="swatch" style="background:${escapeAttr(c)}" data-rmc="${i}" data-ci="${ci}" title="حذف"></button>`).join("")}</div>
+        </div>
         <p style="margin:8px 0 0;color:#666;font-size:.75rem">نسبت گالری — حداکثر ۴ تیک هیرو</p>
       </div>
       <div style="display:flex;flex-direction:column;gap:6px">
@@ -461,8 +466,25 @@ $("#works").addEventListener("input", (e) => {
   site.works[i][t.dataset.k] = t.value;
 });
 
-$("#works").addEventListener("change", (e) => {
+$("#works").addEventListener("change", async (e) => {
   const t = e.target;
+  if (t.dataset.idea != null && t.files && t.files[0]) {
+    const i = +t.dataset.idea;
+    const fd = new FormData();
+    fd.append("file", t.files[0]);
+    busy(true);
+    try {
+      const r = await fetch("/api/upload", { method: "POST", body: fd, credentials: "same-origin" });
+      const data = await r.json();
+      if (!r.ok) return toast(data.error || "آپلود نشد");
+      site.works[i].idea_src = data.src;
+      renderWorks();
+      toast("عکس ایده آپلود شد — ذخیره را بزن");
+    } finally {
+      busy(false);
+    }
+    return;
+  }
   const i = +t.dataset.i;
   if (Number.isNaN(i)) return;
   if (t.dataset.k === "featured") {
