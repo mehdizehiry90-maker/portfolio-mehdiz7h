@@ -34,7 +34,7 @@ function thumb(src, w) {
   return `/t/${w}/${s}`;
 }
 function catLabel(c) {
-  return c === "yt" ? "YouTube" : c === "cover" ? "Cover" : "Social";
+  return c === "yt" ? "YouTube" : c === "cover" ? "Banner" : "Social";
 }
 
 function applySite(s) {

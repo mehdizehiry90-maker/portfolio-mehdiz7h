@@ -163,10 +163,30 @@ function collect() {
   };
 }
 
+let selectedIdx = 0;
+function renderWorkList() {
+  const box = $("#worklist");
+  if (!box || !site) return;
+  box.innerHTML = (site.works || []).map((w, i) => `
+    <div class="wl ${i === selectedIdx ? "on" : ""}" data-sel="${i}">
+      <span class="n">${i + 1}</span>
+      <img src="/${escapeAttr(w.src)}" alt="" />
+      <b>${escapeAttr(w.title || "بدون عنوان")}</b>
+      <div class="ord">
+        <button type="button" class="btn ghost" data-up="${i}">↑</button>
+        <button type="button" class="btn ghost" data-dn="${i}">↓</button>
+      </div>
+    </div>`).join("");
+}
 function renderWorks() {
+  renderWorkList();
   const box = $("#works");
   box.innerHTML = "";
-  site.works.forEach((w, i) => {
+  if (!site.works.length) return;
+  if (selectedIdx >= site.works.length) selectedIdx = 0;
+  const w = site.works[selectedIdx];
+  const i = selectedIdx;
+  {
     const el = document.createElement("div");
     el.className = "witem";
     el.innerHTML = `
@@ -176,7 +196,7 @@ function renderWorks() {
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">
           <select data-k="cat" data-i="${i}">
             <option value="social" ${w.cat === "social" ? "selected" : ""}>سوشال</option>
-            <option value="cover" ${w.cat === "cover" ? "selected" : ""}>کاور</option>
+            <option value="cover" ${w.cat === "cover" ? "selected" : ""}>بنر</option>
             <option value="yt" ${w.cat === "yt" ? "selected" : ""}>تامنیل</option>
           </select>
           <select data-k="ratio" data-i="${i}">
@@ -212,7 +232,7 @@ function renderWorks() {
         }).join("")}</div>
       </div>`;
     box.appendChild(el);
-  });
+  }
   renderCollage();
 }
 
@@ -309,6 +329,28 @@ document.querySelector(".tabs").addEventListener("click", (e) => {
 });
 
 document.addEventListener("click", (e) => {
+  const row = e.target.closest("#worklist [data-sel]");
+  if (row && !e.target.closest("[data-up],[data-dn]")) {
+    selectedIdx = +row.dataset.sel;
+    renderWorks();
+    return;
+  }
+  const wu = e.target.closest("#worklist [data-up]");
+  const wd = e.target.closest("#worklist [data-dn]");
+  if (wu || wd) {
+    const i = +(wu || wd).dataset.up || +(wu || wd).dataset.dn;
+    const idx = wu ? +wu.dataset.up : +wd.dataset.dn;
+    if (wu && idx > 0) {
+      [site.works[idx - 1], site.works[idx]] = [site.works[idx], site.works[idx - 1]];
+      selectedIdx = idx - 1;
+    }
+    if (wd && idx < site.works.length - 1) {
+      [site.works[idx + 1], site.works[idx]] = [site.works[idx], site.works[idx + 1]];
+      selectedIdx = idx + 1;
+    }
+    renderWorks();
+    return;
+  }
   const pickBtn = e.target.closest("[data-pick]");
   if (pickBtn) {
     const i = +pickBtn.dataset.pick;
@@ -536,6 +578,11 @@ function nextColorSlot(i) {
 
 $("#works").addEventListener("click", async (e) => {
   const t = e.target;
+  const lab = e.target.closest(".sw-lab");
+  if (lab && !t.dataset.drop) {
+    lab.closest(".pick-row")?.querySelectorAll(".sw-lab").forEach((el) => el.classList.remove("on"));
+    lab.classList.add("on");
+  }
   const eye = e.target.closest("[data-eye]");
   if (eye) {
     const i = +eye.dataset.eye;
@@ -589,9 +636,9 @@ $("#works").addEventListener("click", async (e) => {
   }
 });
 
-$("#addwork").addEventListener("click", async () => {
+$("#upfile").addEventListener("change", async () => {
   const file = $("#upfile").files[0];
-  if (!file) return toast("اول عکس را انتخاب کن");
+  if (!file) return;
   const fd = new FormData();
   fd.append("file", file);
   busy(true);
@@ -608,6 +655,7 @@ $("#addwork").addEventListener("click", async () => {
       ratio: "1-1",
       idea: "",
     });
+    selectedIdx = 0;
     $("#upfile").value = "";
     renderWorks();
     toast("اضافه شد — ذخیره را بزن");

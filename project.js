@@ -6,7 +6,7 @@ function thumb(src, w) {
   const s = String(src||"").replace(/^\//,"");
   return s ? `/t/${w}/${s}` : "";
 }
-function catLabel(c) { return c === "yt" ? "YOUTUBE THUMBNAIL" : c === "cover" ? "COVER" : "SOCIAL CAMPAIGN"; }
+function catLabel(c) { return c === "yt" ? "YOUTUBE THUMBNAIL" : c === "cover" ? "BANNER" : "SOCIAL CAMPAIGN"; }
 
 const id = decodeURIComponent(location.pathname.split("/").pop() || "");
 

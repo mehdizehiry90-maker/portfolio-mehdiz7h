@@ -50,7 +50,25 @@
     @media (max-width:720px) { .wgt { grid-template-columns: 1fr; } }
     .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     @media (max-width:720px) { .grid2 { grid-template-columns: 1fr; } }
-    .works { display: grid; gap: 12px; }
+    .works-layout { display: grid; grid-template-columns: 280px 1fr; gap: 18px; align-items: start; }
+    @media (max-width: 900px) { .works-layout { grid-template-columns: 1fr; } }
+    .works-side { background: #111; border: 1px solid #222; border-radius: 16px; padding: 12px; }
+    .add-banner {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      background: var(--acc); color: #111; font-weight: 800; border-radius: 12px;
+      padding: 12px; cursor: pointer; margin-bottom: 14px;
+    }
+    .side-h { color: var(--mute); font-size: .78rem; margin: 0 6px 10px; }
+    .wl {
+      display: grid; grid-template-columns: 18px 44px 1fr auto; gap: 8px; align-items: center;
+      padding: 8px; border-radius: 12px; cursor: pointer; margin-bottom: 6px; border: 1px solid transparent;
+    }
+    .wl.on { border-color: var(--acc); background: #191919; }
+    .wl img { width: 44px; height: 44px; object-fit: cover; border-radius: 8px; background: #000; }
+    .wl .n { color: var(--mute); font-size: .8rem; font-family: Syne, sans-serif; }
+    .wl b { font-size: .82rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .wl .ord { display: flex; flex-direction: column; gap: 2px; }
+    .wl .ord button { padding: 2px 8px; font-size: .7rem; }
     .witem {
       display: grid; grid-template-columns: 88px 1fr auto; gap: 12px; align-items: start;
       background: #111; border: 1px solid #222; border-radius: 14px; padding: 10px;
