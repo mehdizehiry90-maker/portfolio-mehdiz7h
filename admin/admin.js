@@ -196,18 +196,20 @@ function renderWorks() {
         <label style="margin-top:8px">عکس ایده اولیه (قبل)</label>
         ${w.idea_src ? `<img src="/${escapeAttr(w.idea_src)}" alt="" style="width:72px;height:72px;object-fit:contain;margin:6px 0;border-radius:8px" />` : ""}
         <input type="file" accept="image/*" data-idea="${i}" />
-        <p style="margin:12px 0 8px;color:#bbb;font-size:.85rem">رنگ: روی عکس فاینال کلیک کن، یا روی مربع بعد قطره‌چکان پنجره Color</p>
-        <img class="drop-src" data-drop="${i}" src="/${escapeAttr(w.src)}" alt="فاینال" />
-        <div class="sw-edit">${[0,1,2].map((ci) => {
-          const c = (w.colors || [])[ci] || "#888888";
-          return `<label class="sw-lab"><input type="color" data-col="${i}" data-ci="${ci}" value="${c}" /><span>${(w.colors || [])[ci] || "خالی"}</span></label>`;
-        }).join("")}</div>
         <p style="margin:8px 0 0;color:#666;font-size:.75rem">نسبت گالری — حداکثر ۴ تیک هیرو</p>
       </div>
       <div style="display:flex;flex-direction:column;gap:6px">
         <button class="btn ghost" type="button" data-up="${i}">↑</button>
         <button class="btn ghost" type="button" data-dn="${i}">↓</button>
         <button class="btn danger" type="button" data-del="${i}">حذف</button>
+      </div>
+      <div class="pick-row">
+        <p style="color:#bbb;font-size:.85rem;margin-bottom:6px">عکس فاینال — اینجا کلیک کن تا رنگ برداشته شود</p>
+        <img class="drop-src" data-drop="${i}" src="/${escapeAttr(w.src)}" alt="فاینال" />
+        <div class="sw-edit">${[0,1,2].map((ci) => {
+          const c = (w.colors || [])[ci] || "#888888";
+          return `<label class="sw-lab"><input type="color" data-col="${i}" data-ci="${ci}" value="${c}" /><span>${(w.colors || [])[ci] || "خالی"}</span></label>`;
+        }).join("")}</div>
       </div>`;
     box.appendChild(el);
   });
