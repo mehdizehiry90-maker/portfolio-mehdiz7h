@@ -196,12 +196,10 @@ function renderWorks() {
         <label style="margin-top:8px">عکس ایده اولیه (قبل)</label>
         ${w.idea_src ? `<img src="/${escapeAttr(w.idea_src)}" alt="" style="width:72px;height:72px;object-fit:contain;margin:6px 0;border-radius:8px" />` : ""}
         <input type="file" accept="image/*" data-idea="${i}" />
-        <p style="margin:10px 0 6px;color:#bbb;font-size:.8rem">رنگ فاینال — روی عکس کلیک کن یا دکمه قطره‌چکان</p>
-        <img class="drop-src" data-drop="${i}" src="/${escapeAttr(w.src)}" alt="" />
-        <button type="button" class="btn ghost" data-eye="${i}" style="margin:8px 0">قطره‌چکان</button>
+        <p style="margin:12px 0 8px;color:#bbb;font-size:.85rem">۳ رنگ اصلی — روی مربع بزن، در پنجره رنگ از قطره‌چکان استفاده کن</p>
         <div class="sw-edit">${[0,1,2].map((ci) => {
-          const c = (w.colors || [])[ci] || "";
-          return `<label class="sw-lab"><input type="color" data-col="${i}" data-ci="${ci}" value="${c || "#888888"}" /><span>${c || "—"}</span></label>`;
+          const c = (w.colors || [])[ci] || "#888888";
+          return `<label class="sw-lab"><input type="color" data-col="${i}" data-ci="${ci}" value="${c}" /><span>${(w.colors || [])[ci] || "خالی"}</span></label>`;
         }).join("")}</div>
         <p style="margin:8px 0 0;color:#666;font-size:.75rem">نسبت گالری — حداکثر ۴ تیک هیرو</p>
       </div>
@@ -470,6 +468,16 @@ $("#works").addEventListener("input", (e) => {
 
 $("#works").addEventListener("change", async (e) => {
   const t = e.target;
+  if (t.dataset.col != null) {
+    const i = +t.dataset.col;
+    const ci = +t.dataset.ci;
+    if (!site.works[i].colors) site.works[i].colors = ["", "", ""];
+    while (site.works[i].colors.length < 3) site.works[i].colors.push("");
+    site.works[i].colors[ci] = t.value;
+    const lab = t.parentElement && t.parentElement.querySelector("span");
+    if (lab) lab.textContent = t.value;
+    return;
+  }
   if (t.dataset.idea != null && t.files && t.files[0]) {
     const i = +t.dataset.idea;
     const fd = new FormData();

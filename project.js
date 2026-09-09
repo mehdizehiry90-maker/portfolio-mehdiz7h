@@ -57,7 +57,7 @@ fetch("/api/site").then((r) => r.json()).then((site) => {
     ${colors.length ? `<h3>COLORS</h3><div class="swatches">${colors.map((c) => `<span class="swatch" style="background:${esc(c)}" title="${esc(c)}"></span>`).join("")}</div>` : ""}
     <h3>MORE PROJECTS</h3>
     <div class="more-grid">
-      ${more.map((m) => `<a href="/work/${esc(m.id)}"><img src="${esc(thumb(m.src, 600))}" alt="${esc(m.title)}" /><p>${esc(m.title)}</p></a>`).join("")}
+      ${more.map((m) => `<a href="/work/${esc(m.id)}"><img src="${esc(pic(m.src))}" alt="${esc(m.title)}" loading="lazy" /></a>`).join("")}
     </div>
     <div class="case-nav">
       <a href="/work/${esc(prev.id)}">← ${esc(prev.title)}</a>
