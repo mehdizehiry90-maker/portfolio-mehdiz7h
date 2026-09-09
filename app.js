@@ -87,7 +87,7 @@ function applySite(s) {
     art.innerHTML = heroWorks.map((w) => {
       const p = w.pos || {};
       const st = `--hx:${p.x ?? 22}%;--hy:${p.y ?? 14}%;--hw:${p.w ?? 56}%;--hh:${p.h ?? 70}%;--hz:${p.z || 2}`;
-      return `<a href="/work/${esc(w.id)}" data-ratio="${esc(w.ratio || "1-1")}" style="${st}"><span class="spin"><img src="${esc(thumb(w.src, 700))}" alt="${esc(w.title)}" loading="eager" /></span></a>`;
+      return `<a href="/work/${esc(w.id)}" data-ratio="${esc(w.ratio || "1-1")}" style="${st}"><span class="spin"><img src="${esc(pic(w.src))}" alt="${esc(w.title)}" loading="eager" onerror="this.src=this.src.replace('/t/700/','/')" /></span></a>`;
     }).join("");
   }
 
@@ -145,7 +145,7 @@ function renderGrid() {
     const year = w.year || SITE.year || "2026";
     return `<a class="card" href="/work/${esc(w.id)}" data-cat="${esc(w.cat)}" data-ratio="${esc(w.ratio||"1-1")}" data-i="${i}">
       <div class="ph"></div>
-      <img src="${esc(thumb(w.src, 800))}" data-orig="${esc(pic(w.src))}" alt="${esc(w.title)}" loading="lazy" decoding="async" />
+      <img src="${esc(pic(w.src))}" alt="${esc(w.title)}" loading="lazy" decoding="async" />
       <div class="ov">
         <small>${esc(catLabel(w.cat))} · ${esc(year)}</small>
         <b>${esc(w.title)}</b>

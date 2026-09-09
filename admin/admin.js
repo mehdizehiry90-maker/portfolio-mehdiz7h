@@ -196,7 +196,8 @@ function renderWorks() {
         <label style="margin-top:8px">عکس ایده اولیه (قبل)</label>
         ${w.idea_src ? `<img src="/${escapeAttr(w.idea_src)}" alt="" style="width:72px;height:72px;object-fit:contain;margin:6px 0;border-radius:8px" />` : ""}
         <input type="file" accept="image/*" data-idea="${i}" />
-        <p style="margin:12px 0 8px;color:#bbb;font-size:.85rem">۳ رنگ اصلی — روی مربع بزن، در پنجره رنگ از قطره‌چکان استفاده کن</p>
+        <p style="margin:12px 0 8px;color:#bbb;font-size:.85rem">رنگ: روی عکس فاینال کلیک کن، یا روی مربع بعد قطره‌چکان پنجره Color</p>
+        <img class="drop-src" data-drop="${i}" src="/${escapeAttr(w.src)}" alt="فاینال" />
         <div class="sw-edit">${[0,1,2].map((ci) => {
           const c = (w.colors || [])[ci] || "#888888";
           return `<label class="sw-lab"><input type="color" data-col="${i}" data-ci="${ci}" value="${c}" /><span>${(w.colors || [])[ci] || "خالی"}</span></label>`;
