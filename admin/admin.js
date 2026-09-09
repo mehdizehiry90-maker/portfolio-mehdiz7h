@@ -509,15 +509,28 @@ $("#works").addEventListener("change", async (e) => {
   }
 });
 
-function setColor(i, ci, hex) {
-  if (!site.works[i].colors) site.works[i].colors = [];
+function setColor(i, ci, hex, rerender) {
+  if (!site.works[i].colors) site.works[i].colors = ["", "", ""];
+  while (site.works[i].colors.length < 3) site.works[i].colors.push("");
   site.works[i].colors[ci] = hex;
-  site.works[i].colors = site.works[i].colors.slice(0, 3);
-  renderWorks();
+  const inp = document.querySelector(`input[data-col="${i}"][data-ci="${ci}"]`);
+  if (inp) {
+    inp.value = hex;
+    const lab = inp.parentElement && inp.parentElement.querySelector("span");
+    if (lab) lab.textContent = hex;
+  }
+  document.querySelectorAll(".sw-lab").forEach((el) => el.classList.remove("on"));
+  const next = document.querySelector(`input[data-col="${i}"][data-ci="${(ci + 1) % 3}"]`);
+  if (next) next.closest(".sw-lab")?.classList.add("on");
+  if (rerender) renderWorks();
 }
 function nextColorSlot(i) {
+  const on = document.querySelector(`.sw-lab.on input[data-col="${i}"]`);
+  if (on) return +on.dataset.ci;
   const c = site.works[i].colors || [];
-  if (c.length < 3) return c.length;
+  for (let n = 0; n < 3; n++) {
+    if (!c[n] || c[n] === "#888888") return n;
+  }
   return 0;
 }
 
@@ -550,8 +563,9 @@ $("#works").addEventListener("click", async (e) => {
     ctx.drawImage(img, 0, 0);
     const d = ctx.getImageData(Math.max(0, Math.min(x, cnv.width - 1)), Math.max(0, Math.min(y, cnv.height - 1)), 1, 1).data;
     const hex = "#" + [d[0], d[1], d[2]].map((n) => n.toString(16).padStart(2, "0")).join("");
-    setColor(i, nextColorSlot(i), hex);
-    toast(hex + " — ذخیره را بزن");
+    const slot = nextColorSlot(i);
+    setColor(i, slot, hex);
+    toast("رنگ " + (slot + 1) + ": " + hex + " — ذخیره را بزن");
     return;
   }
   if (t.dataset.del != null) {
